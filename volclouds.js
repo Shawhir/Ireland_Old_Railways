@@ -24,7 +24,7 @@ import { SIZE, buildNoise } from "./cloud-noise.js";
 
 const FOCUS = [-8.0, 53.4]; // middle of the cloud field, mid-Ireland
 const FIELD_KM = [650, 1000]; // the field fades out between these distances from FOCUS
-const FADE = [0.7, 0.95]; // when, in the flight, it dissolves: once the camera is through it
+const FADE = [0.58, 0.72]; // when, in the flight, it dissolves: as the camera goes through it, so no thin streaks are left lying just above the land
 // The jet carries everything from the west-south-west, along this bearing.
 const WIND_BEARING = 67;
 const MAX_PIXELS = 2.5e6; // the cloud pass's resolution cap
@@ -392,8 +392,9 @@ export function createVolumeClouds({ view, RenderNode, webgl, SpatialReference, 
   let P = PRESETS[kind] || PRESETS.cumulus;
   let shaderFor = volumeShader;
   // The noise volume, built off the main thread while the title card is up.
-  let noise = null;
-  const built = (data) => { noise = data; };
+  let noise = null, noiseReady;
+  const ready = new Promise((r) => (noiseReady = r));
+  const built = (data) => { noise = data; noiseReady(); };
   try {
     const worker = new Worker(new URL("./cloud-noise.js", import.meta.url), { type: "module" });
     worker.onmessage = (e) => { built(e.data); worker.terminate(); };
@@ -620,6 +621,8 @@ export function createVolumeClouds({ view, RenderNode, webgl, SpatialReference, 
   };
 
   return {
+    // Resolves once the noise volume is built: until then there are no clouds to draw.
+    ready,
     place,
     fitPath,
     // Lighter: a third of the pixels (the opening asks for this on a slow machine before it

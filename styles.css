@@ -1183,3 +1183,15 @@ body.future .sg-lede { color: #e6f6ff; }
   #story, #findings { inset: auto 8px 8px 8px !important; width: auto !important; height: 56vh !important; max-height: none; }
   body.story-open #panel, body.findings-open #panel { visibility: hidden; }
 }
+
+/* ?video, for screen recordings: the checkboxes and small print go, so the panel fits on a short
+   screen drawn large. */
+body.video #panel .toggle, body.video #panel .status, body.video #panel .note, body.video .landmark-keys { display: none; }
+/* ?video: panel, drawers, tickets and the home button drawn larger, by --vz (VIDEO_UI_ZOOM in
+   app.js), and the panel always steps aside for a drawer. */
+body.video #panel, body.video #story, body.video #findings, body.video .home-btn, body.video .future-legend { zoom: var(--vz, 1.45); }
+body.video #panel { max-height: calc((100vh - 48px) / var(--vz, 1.45)); }
+body.video #story, body.video #findings { height: calc((100vh - 48px) / var(--vz, 1.45)) !important; max-height: none; }
+body.video .ticket-pop { width: calc(300px * var(--vz, 1.45)); }
+body.video .ticket-pop .ticket, body.video .ticket-pop .ticket-close { zoom: var(--vz, 1.45); }
+body.video.story-open #panel, body.video.findings-open #panel { opacity: 0; transform: translateX(16px); pointer-events: none; }

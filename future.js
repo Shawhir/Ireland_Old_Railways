@@ -1,4 +1,5 @@
-// 2050: the network the All-Island Strategic Rail Review (2024) proposes, for the story's last
+// 2050: the network the All-Island Strategic Rail Review (Arup, for the Department of Transport and
+// the Department for Infrastructure, 2024) proposes, for the story's last
 // chapter. A dark layer slides over the old map (which still shows faintly through it, a ghost
 // of 1920), and the proposed railway is drawn on it in light: new electric lines, electrified
 // upgrades, new lines, and improvements to the rest, each as glowing lines with light running
@@ -203,7 +204,7 @@ export function createFuture({ view, Point }) {
   const host = view.container;
   const layer = document.createElement("div");
   layer.className = "future-layer";
-  layer.innerHTML = `<canvas></canvas><div class="future-legend">${Object.values(KINDS).map((k) => `<span><i style="--c:${k.color}"></i>${k.label}</span>`).join("")}<span><b></b>New station</span><span><i class="ghost"></i>The railway in 1920</span><em>All-Island Strategic Rail Review: the network proposed for 2050 (schematic)</em></div>`;
+  layer.innerHTML = `<canvas></canvas><div class="future-legend">${Object.values(KINDS).map((k) => `<span><i style="--c:${k.color}"></i>${k.label}</span>`).join("")}<span><b></b>New station</span><span><i class="ghost"></i>The railway in 1920</span><em>The network proposed for 2050 (schematic), after the All-Island Strategic Rail Review by Arup (2024)</em></div>`;
   host.appendChild(layer);
   const canvas = layer.querySelector("canvas");
   const legend = layer.querySelector(".future-legend");

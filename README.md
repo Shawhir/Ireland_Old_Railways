@@ -18,11 +18,13 @@ WebGL, styled after the 1920 Railway Clearing House map of Ireland.
 - **Click a line or a town** for a railway-ticket card with its dates.
 - **Story** (7 short chapters, told through Navan, the largest town on the island without a
   station): how the railway grew, why it fell, what it did to travel and to the places it left,
-  and the 2024 All-Island Strategic Rail Review's plan for 2050, drawn over the 1920 network.
+  and the plan for 2050 from the All-Island Strategic Rail Review (prepared by Arup for the
+  Department of Transport and the Department for Infrastructure, 2024), drawn over the 1920 network.
 - **Findings** (6 cards): the numbers, with every source listed and checked.
 - The home button returns to the whole island; drag, right-drag and scroll to explore.
 
-Optional URL switches: `?story=classic` (the original, longer story), `?debug` (timings and
+Optional URL switches: `?story=classic` (the original, longer story), `?video` or `?video=1.75`
+(for screen recordings: the UI drawn larger, checkboxes hidden), `?debug` (timings and
 debugging hooks), `?fullres` (draw the map at the screen's full resolution), `?sea=living`.
 
 ## Run it locally
@@ -44,6 +46,7 @@ then open http://localhost:8765/. Any static file server works (`python -m http.
 - Railway lines, opening and closing years: [OpenHistoricalMap](https://www.openhistoricalmap.org) contributors (CC0).
 - Towns and populations: [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors (ODbL), with 2021/22 census figures (CSO, NISRA).
 - Basemap and terrain: Esri.
+- The 2050 network: the [All-Island Strategic Rail Review](https://www.arup.com/news/arup-delivers-a-strategic-review-to-transform-the-railway-network-on-the-island-of-ireland/), prepared by Arup for the Department of Transport (Ireland) and the Department for Infrastructure (Northern Ireland), published 31 July 2024. Drawn schematically from the review's map.
 - Figures in the story and findings: sources listed in the app (Findings → Sources) and in `analysis/FINDINGS.md`. The estimates are rough, order-of-magnitude figures.
 - The "IRELAND" lettering is traced from a photograph of the 1920 map's title (public domain).
 

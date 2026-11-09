@@ -46,7 +46,7 @@ export const SOURCES = [
   { what: "Rail freight, 76m tonne-km (2023): 0.6% of the total", title: "EPA, State of the Environment 2024 (Eurostat)", url: "https://epawebapp.epa.ie/ebooks/soe2024/291/", check: "ok" },
   { what: "Northern Ireland: 49.3m tonnes by road (2016), none by rail", title: "DfI, Northern Ireland Transport Statistics 2016-17", url: "https://www.infrastructure-ni.gov.uk/news/publication-northern-ireland-transport-statistics-2016-17", check: "ok" },
   { what: "76% less CO₂ per tonne by rail", title: "GB Railfreight (a UK industry figure)", url: "https://www.gbrailfreight.com/?p=4186", check: "fixed", note: "GB diesel rail, not Irish; first cited as DB Cargo" },
-  { what: "Reopenings would bring 700,000 more people within 5 km of a station", title: "All-Island Strategic Rail Review (2024), via the Irish Times", url: "https://www.irishtimes.com/transport/2024/07/31/faster-more-frequent-trains-and-new-services-in-northwest-among-proposals-in-rail-review", check: "ok", note: "if all its recommendations are delivered" },
+  { what: "Reopenings would bring 700,000 more people within 5 km of a station", title: "All-Island Strategic Rail Review, by Arup for the Department of Transport and the Department for Infrastructure (2024), via the Irish Times", url: "https://www.irishtimes.com/transport/2024/07/31/faster-more-frequent-trains-and-new-services-in-northwest-among-proposals-in-rail-review", check: "ok", note: "if all its recommendations are delivered" },
 ];
 
 // The cards. `scene` is what the map shows (app.js applyScene); `from` is the year the map is put

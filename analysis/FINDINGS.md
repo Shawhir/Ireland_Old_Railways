@@ -35,7 +35,7 @@ Notes:
 - Villages with no population in OSM are assumed to have 550 people (the median of tagged villages). Towns with none are assumed to have 2,500.
 - Navan is added back: its line carries Tara Mines freight only, with no passengers since 1958.
 - Rathfarnham is taken out: its old line is now the Luas Green Line.
-- As a sanity check, the All-Island Strategic Rail Review (2024) says that, if all its recommendations were delivered, about 700,000 more people would live within 5 km of a station (Irish Times, 31 Jul 2024).
+- As a sanity check, the All-Island Strategic Rail Review (Arup, for the two transport departments, 2024) says that, if all its recommendations were delivered, about 700,000 more people would live within 5 km of a station (Irish Times, 31 Jul 2024).
 
 Largest towns that lost rail (2021/22 population, distance to the nearest open line):
 

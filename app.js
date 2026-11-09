@@ -24,6 +24,8 @@ import { createFuture } from "./future.js";
 // made, below); the page's own text and panels are drawn by the browser at full sharpness.
 // ?fullres draws the map at the screen's full resolution.
 const MAX_MAP_DPR = 1.5;
+// ?video (for screen recordings): the UI this much larger, or by ?video=<factor> (styles.css, body.video).
+const VIDEO_UI_ZOOM = Math.min(3, Math.max(1, +new URLSearchParams(location.search).get("video") || 1.45));
 if (!new URLSearchParams(location.search).has("fullres") && window.devicePixelRatio > MAX_MAP_DPR) {
   const real = Object.getOwnPropertyDescriptor(Window.prototype, "devicePixelRatio")
     || Object.getOwnPropertyDescriptor(window, "devicePixelRatio");
@@ -363,12 +365,14 @@ async function main() {
   // panel together would leave the map a sliver (179 px at 941 px wide), so the panel steps
   // aside while a drawer is open (styles.css does the same) and the map gets its space.
   const PANEL_ASIDE_W = 1280;
+  // ?video draws the panel, drawers and tickets larger (styles.css, body.video), by this much.
+  const UI_ZOOM = new URLSearchParams(location.search).has("video") ? VIDEO_UI_ZOOM : 1;
   const padForPanel = () => {
     const wide = view.width > 600;
     const drawerOpen = ["findings-open", "story-open"].some((c) => document.body.classList.contains(c));
     // Room for the open drawer: the story's 360 px window, or the findings' 330 px one (+ margins).
-    const drawer = !wide || !drawerOpen ? 0 : document.body.classList.contains("story-open") ? 392 : 362;
-    const panel = drawerOpen && view.width < PANEL_ASIDE_W ? 0 : 330;
+    const drawer = !wide || !drawerOpen ? 0 : (document.body.classList.contains("story-open") ? 392 : 362) * UI_ZOOM;
+    const panel = drawerOpen && view.width < PANEL_ASIDE_W * UI_ZOOM ? 0 : 330 * UI_ZOOM;
     // On a phone the panel, or the story or findings sheet when one is open, sits along the bottom.
     const sheet = !drawerOpen ? $("panel") : document.getElementById(document.body.classList.contains("story-open") ? "story" : "findings");
     view.padding = wide ? { right: panel, left: drawer } : { bottom: (sheet?.offsetHeight || 0) + 16 };
@@ -681,7 +685,9 @@ async function main() {
     requestAnimationFrame(loop);
   };
   requestAnimationFrame(loop);
-  if (new URLSearchParams(location.search).has("debug")) window.__anim = { rail, towns, swans, view, get lost() { return lost; }, get places() { return places; } };
+  // ?debug, or ?video (for scripted screen recordings, without the debug box), exposes the map's parts.
+  if (new URLSearchParams(location.search).has("video")) { document.body.classList.add("video"); document.body.style.setProperty("--vz", VIDEO_UI_ZOOM); }
+  if (["debug", "video"].some((k) => new URLSearchParams(location.search).has(k))) window.__anim = { rail, towns, swans, view, get lost() { return lost; }, get places() { return places; } };
 
   const total = data.features.reduce((s, f) => s + f.properties.km, 0);
   setStatus(`${data.features.length.toLocaleString()} line sections, ${Math.round(total).toLocaleString()} km in total.`);

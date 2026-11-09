@@ -53,7 +53,7 @@ const SOURCES = {
   desnz: "UK DESNZ greenhouse gas conversion factors (car; national rail average)",
   epaAir: "EPA, Air Quality in Ireland 2024 (EEA estimate of premature deaths)",
   eurostat: "Eurostat, modal split of inland freight",
-  aisrr: "All-Island Strategic Rail Review (2024); RTÉ, 31 July 2024",
+  aisrr: "All-Island Strategic Rail Review, prepared by Arup for the Department of Transport and the Department for Infrastructure (published 31 July 2024); RTÉ, 31 July 2024",
   nce: "New Civil Engineer, 'New rail lines eyed in £31bn Republic and Northern Ireland vision' (12 August 2024)",
   news: "RTÉ, 'Four new stations in plans for rail line to Navan' (20 May 2026); Connacht Telegraph, 'Confirmation from Irish Rail that government derailed plans to reopen Western Rail Corridor in full' (23 October 2026); Irish News and Into the West campaign (Portadown–Derry)",
   times: "Disused Stations, 'Londonderry Foyle Road' (1958 GNR timetable); Fermanagh Herald, 'Sixty years since last train pulled out of Enniskillen' (2017); Castlegregory local history, 'Tralee-Dingle Light Railway'; Translink and Bus Éireann timetables via bustimes.org (November 2026); car times: OpenStreetMap routing (OSRM), no traffic",

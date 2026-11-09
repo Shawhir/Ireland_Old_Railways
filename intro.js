@@ -9,6 +9,7 @@ const FLIGHT_MS = 8000;
 const START_SCALE = 2.2; // start this many times further out than the home view
 const WATCHDOG_MS = 30000; // if the flight hasn't started by then, give up and show the page
 const TILE_WAIT_MS = 4000; // longest to wait behind the card for the start view's tiles
+const NOISE_WAIT_MS = 4000; // and for the clouds' noise volume
 // The clouds are the costliest thing in the flight. If this machine can't draw them smoothly
 // (a frame behind the card over PROBE_SLOW_MS, or SLOW_RUN frames in a row over SLOW_MS during
 // the flight), they're dropped: a smooth flight without them beats a juddering one.
@@ -134,6 +135,9 @@ export async function flyIn({ view, goHome, homeTarget, altitudeMax, clouds: clo
     const waitFrom = performance.now();
     while (view.updating && performance.now() - waitFrom < TILE_WAIT_MS) await new Promise((r) => setTimeout(r, 100));
 
+    // The clouds' noise is built in a worker; on a busy machine it can still be going when the
+    // tiles are in, and a flight then starts with no clouds to draw. Wait for it (a while).
+    if (clouds?.ready) await Promise.race([clouds.ready, new Promise((r) => setTimeout(r, NOISE_WAIT_MS))]);
     if (mode.clouds === "off") dropClouds("switched off");
     // Can this machine draw the clouds smoothly? Time a few frames with them up, still behind
     // the card. (Too few frames in the time means very slow frames; none means a hidden page,
