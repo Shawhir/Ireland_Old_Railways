@@ -372,7 +372,9 @@ async function main() {
     // On a phone the panel, or the story or findings sheet when one is open, sits along the bottom.
     const sheet = !drawerOpen ? $("panel") : document.getElementById(document.body.classList.contains("story-open") ? "story" : "findings");
     view.padding = wide ? { right: panel, left: drawer } : { bottom: (sheet?.offsetHeight || 0) + 16 };
-    view.ui.padding = { top: 15, right: 15, bottom: 15, left: 15 + drawer };
+    // (The map's own padding already moves its buttons clear of a drawer; adding the drawer here
+    // too pushed the home button twice as far, out into the middle of the map.)
+    view.ui.padding = { top: 15, right: 15, bottom: 15, left: 15 };
   };
   padForPanel();
   view.watch("width", padForPanel);

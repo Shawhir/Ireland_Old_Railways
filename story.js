@@ -55,6 +55,7 @@ const SOURCES = {
   eurostat: "Eurostat, modal split of inland freight",
   aisrr: "All-Island Strategic Rail Review (2024); RTÉ, 31 July 2024",
   nce: "New Civil Engineer, 'New rail lines eyed in £31bn Republic and Northern Ireland vision' (12 August 2024)",
+  news: "RTÉ, 'Four new stations in plans for rail line to Navan' (20 May 2026); Connacht Telegraph, 'Confirmation from Irish Rail that government derailed plans to reopen Western Rail Corridor in full' (23 October 2026); Irish News and Into the West campaign (Portadown–Derry)",
   times: "Disused Stations, 'Londonderry Foyle Road' (1958 GNR timetable); Fermanagh Herald, 'Sixty years since last train pulled out of Enniskillen' (2017); Castlegregory local history, 'Tralee-Dingle Light Railway'; Translink and Bus Éireann timetables via bustimes.org (November 2026); car times: OpenStreetMap routing (OSRM), no traffic",
   map: "This map: OpenHistoricalMap lines; OSM towns with 2021/22 census populations",
 };
@@ -227,12 +228,17 @@ export async function setupStory({ api, towns, impact }) {
         api.goHome();
       },
       render: (el) => {
-        lede(el, "The 2024 All-Island Strategic Rail Review: 32 recommendations by 2050, many rebuilding lines that were lifted. On the map, faint amber is 1920; light is the plan.");
+        lede(el, "The 2024 All-Island Strategic Rail Review: 32 recommendations by 2050, many rebuilding lifted lines. Where it stands, autumn 2026:");
         hero(el, { value: odo("700,000"), label: "more people within 5 km of a station", sub: "if all of it is built", accent: "#3ce8ff" });
         lengthBar(el, 2300, 3000, { grow: true });
-        chips(el, ["Portadown–Omagh–Derry–Letterkenny", "Mullingar–Cavan–Monaghan–Portadown", "The Western Rail Corridor via Tuam", "South Wexford"]);
-        navan(el, "Navan would get its line back: electric, through Dunboyne, the way its trains ran until 1947.");
-        el.insertAdjacentHTML("beforeend", `<p class="sg-note">€35–37bn, 2023 prices. None of it is official policy yet: each scheme needs its own business case.</p>${sources("aisrr", "nce")}`);
+        timeline(el, [
+          ["Navan", "Four new stations; planning 2028, building from 2030"],
+          ["Derry", "Portadown–Omagh–Derry: long term, 2040–2050"],
+          ["Tuam", "Full reopening set aside by government, Oct 2026"],
+          ["Wexford", "South Wexford: proposed"],
+        ]);
+        navan(el, "The furthest on: the route consultation closed in July 2026.");
+        el.insertAdjacentHTML("beforeend", `<p class="sg-note">€35–37bn, 2023 prices. Each scheme still needs its own business case.</p>${sources("aisrr", "nce", "news")}`);
       },
     },
   ];
