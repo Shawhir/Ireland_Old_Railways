@@ -1176,3 +1176,10 @@ body.future .sg-lede { color: #e6f6ff; }
 .story-thread { display: block; padding: 7px 11px; }
 .story-thread .story-thread-name { display: inline; margin: 0 6px 0 0; }
 .story-thread p { display: inline; }
+
+/* Phones: the story and the findings are bottom sheets like the panel, so the map they're telling
+   about stays in view above them (full-screen, they hid it); the panel steps aside meanwhile. */
+@media (max-width: 600px) {
+  #story, #findings { inset: auto 8px 8px 8px !important; width: auto !important; height: 56vh !important; max-height: none; }
+  body.story-open #panel, body.findings-open #panel { visibility: hidden; }
+}

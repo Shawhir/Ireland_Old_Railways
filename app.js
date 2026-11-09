@@ -369,7 +369,9 @@ async function main() {
     // Room for the open drawer: the story's 360 px window, or the findings' 330 px one (+ margins).
     const drawer = !wide || !drawerOpen ? 0 : document.body.classList.contains("story-open") ? 392 : 362;
     const panel = drawerOpen && view.width < PANEL_ASIDE_W ? 0 : 330;
-    view.padding = wide ? { right: panel, left: drawer } : { bottom: $("panel").offsetHeight + 16 };
+    // On a phone the panel, or the story or findings sheet when one is open, sits along the bottom.
+    const sheet = !drawerOpen ? $("panel") : document.getElementById(document.body.classList.contains("story-open") ? "story" : "findings");
+    view.padding = wide ? { right: panel, left: drawer } : { bottom: (sheet?.offsetHeight || 0) + 16 };
     view.ui.padding = { top: 15, right: 15, bottom: 15, left: 15 + drawer };
   };
   padForPanel();
