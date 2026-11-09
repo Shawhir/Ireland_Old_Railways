@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ireland's Railways: Then and Now</title>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.30/esri/themes/light/main.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- After the 1920 Railway Clearing House map: a Clarendon-like slab for display, an engraver's roman in
+       small caps, a Caslon for text, and a grotesque for the labels and controls. -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IM+Fell+English+SC&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Roboto+Slab:wght@800&family=Uncial+Antiqua&family=Orbitron:wght@500;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <script src="config.js"></script>
+  <!-- marked has to load before the ArcGIS AMD loader, or it registers itself as an AMD module -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script src="https://js.arcgis.com/4.30/"></script>
+  <script type="module" src="app.js"></script>
+</head>
+<body class="intro-on">
+  <div id="viewDiv"></div>
+
+  <div id="intro" aria-hidden="true">
+    <div class="sky-bg"></div>
+    <!-- A title cartouche, after the 1920 railway map's. -->
+    <div class="intro-title cartouche sheet">
+      <p class="c-then">Then and Now</p>
+      <p class="c-shaded hatched" data-text="Railway Map">Railway Map</p>
+      <p class="c-of">of</p>
+      <!-- "IRELAND" lifted from a photo of the 1920 map's own title (public domain), ink on
+           transparent: scripts/trace-title.py. -->
+      <h1 class="c-hero"><img class="c-hero-art" src="assets/ireland-title.png" alt="Ireland" width="1475" height="217"></h1>
+      <p class="c-roman">The network from its first line</p>
+      <p class="c-grot">to the present day</p>
+      <p class="c-years">1834 – 2026.</p>
+      <p class="intro-skip" id="introHint">Loading the map…</p>
+    </div>
+  </div>
+  <script>
+    // Fail-safe for the opening: if the app's scripts never start (a stale or failed module),
+    // a click, a script error or 20 seconds clears the clouds so the page isn't stuck.
+    (function () {
+      var intro = document.getElementById("intro");
+      function clear() {
+        if (!intro.isConnected || intro.hasAttribute("data-owned")) return;
+        intro.classList.add("done");
+        document.body.classList.remove("intro-on");
+        setTimeout(function () { intro.remove(); }, 900);
+      }
+      intro.addEventListener("click", clear);
+      window.addEventListener("error", clear);
+      setTimeout(clear, 20000);
+    })();
+  </script>
+
+  <aside id="findings" hidden aria-label="Findings">
+    <header>
+      <h2 id="findingsTitle">Findings</h2>
+      <button id="closeFindings" type="button" aria-label="Close findings">✕</button>
+    </header>
+    <div id="findingsBody" class="md">Loading…</div>
+  </aside>
+
+  <aside id="story" hidden aria-label="Story">
+    <header>
+      <span class="story-count" id="storyCount"></span>
+      <button id="closeStory" type="button" aria-label="Close story">✕</button>
+      <div class="story-progress" aria-hidden="true"><span id="storyProgress"></span></div>
+    </header>
+    <div id="storyBody"></div>
+    <footer>
+      <button id="storyBack" type="button">Back</button>
+      <div class="story-dots" id="storyDots"></div>
+      <button id="storyNext" type="button" class="primary">Next</button>
+    </footer>
+  </aside>
+
+  <aside id="panel">
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow">Then and now</p>
+        <!-- Lettered as the opening's title card: the shaded "Railway Map", "of", and the 1920 map's own IRELAND. -->
+        <h1 class="panel-title" aria-label="Railway Map of Ireland">
+          <span class="pt-shaded" aria-hidden="true">Railway Map</span>
+          <span class="pt-of" aria-hidden="true">of</span>
+          <img class="pt-hero" src="assets/ireland-title.png" alt="" width="1475" height="217">
+        </h1>
+      </div>
+      <div class="head-btns">
+        <button type="button" class="story-btn" data-open-story>▶ Story</button>
+        <button type="button" class="findings-btn" data-open-findings>Findings</button>
+      </div>
+    </div>
+    <p class="sub">The network as it stood in <strong id="yearLabel">1833</strong></p>
+
+    <div class="slider-row">
+      <button id="play" type="button" aria-label="Play through the years">▶</button>
+      <input id="year" type="range" min="1833" max="2026" step="1" value="1833" aria-label="Year">
+    </div>
+
+    <dl class="stats">
+      <div><dt>Open</dt><dd id="kmOpen">–</dd></div>
+      <div><dt>Closed by then</dt><dd id="kmClosed">–</dd></div>
+    </dl>
+
+    <ul class="legend">
+      <li><span class="swatch period current"></span>Still in use today</li>
+      <li><span class="swatch period open-then"></span>Open then, closed since</li>
+      <li><span class="town-dot"></span>Town that had lost its railway by then (rises when it closes; taller = more people)</li>
+      <li class="landmark-keys">
+        <span><span class="mark city"></span>City</span>
+        <span><span class="mark historic"></span>Historic site</span>
+        <span><span class="mark railway"></span>Railway heritage</span>
+      </li>
+    </ul>
+
+    <p class="towns-stat"><strong id="townsLost">–</strong> towns and villages cut off, home to <strong id="townsPop">–</strong> people today</p>
+
+    <label class="toggle"><input id="showTowns" type="checkbox" checked> Show towns that lost rail</label>
+    <label class="toggle"><input id="showLost" type="checkbox" checked> Scorch the ground that lost its railway</label>
+    <label class="toggle"><input id="showSmaller" type="checkbox" checked> Name smaller towns and villages as you zoom in</label>
+    <label class="toggle"><input id="showLandmarks" type="checkbox" checked> Show cities and landmarks</label>
+
+    <p id="status" class="status">Loading railway data…</p>
+    <p class="note">Railway data: <a href="https://www.openhistoricalmap.org" target="_blank" rel="noopener">OpenHistoricalMap</a> contributors (CC0). Some opening and closure dates are missing.</p>
+  </aside>
+</body>
+</html>

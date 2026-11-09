@@ -1,0 +1,16 @@
+# OS and editor clutter
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.vscode/
+.idea/
+
+# Node, if anything is ever installed
+node_modules/
+npm-debug.log*
+
+# Local logs and scratch
+*.log
+*.bak
+*.tmp

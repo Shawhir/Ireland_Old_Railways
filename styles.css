@@ -1,0 +1,1178 @@
+:root {
+  /* After the 1920 Railway Clearing House map of Ireland: cream paper, a pale green sea, and
+     lines in engraver's inks (match COLORS in app.js). Today's railway in its red, the railway
+     since lost in its blue, closed lines in sepia, towns cut off in a deep shade of the
+     company green (their buildings under slate roofs).
+     Every mark at least 3:1 on the paper; red and blue stay apart for colour blindness. */
+  --current: #b5332a;   /* the page's red: slider, Story button, focus */
+  --open-then: #2c4d85;
+  /* The lines' own meanings (COLORS in app.js): still running in blue, since lost in red. */
+  --line-kept: #2c4d85;
+  --line-lost: #b5332a;
+  --closed: #86704f;
+  --unknown: #948263;
+  --town: #2f5e48;
+  --town-ink: #1f4434;
+  --town-tint: #e4ede5;
+
+  /* Paper and ink. Brand in the map's company green, the one call to action in its red. */
+  --ink: #1f1d1a;
+  --ink-2: #3b3731;
+  --muted: #665f55;
+  --paper: #f7f3e6;
+  --panel: rgba(247, 243, 230, 0.96);
+  --card: #fbf8ef;
+  --line: #d8cfb9;
+  --sea: #cddcc8;
+  --brand: #3e6a4c;
+  --cta: #a83a26;
+  --cta-hover: #8c2f1e;
+  --accent: var(--brand);
+
+  --display: "Roboto Slab", "Rockwell", Georgia, serif; /* at 800: the 1920 title's Clarendon-like antique */
+  --fell: "IM Fell English SC", Georgia, serif;               /* engraver's small caps */
+  --serif: "Libre Caslon Text", Georgia, "Times New Roman", serif;
+  --sans: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --radius: 2px;
+  --shadow: 0 1px 2px rgba(31, 29, 26, 0.1), 0 8px 24px rgba(31, 29, 26, 0.16);
+  /* Paper: a fine grain with fibres running across it, and broad soft mottling (foxing). */
+  /* Seamless noise: stitchTiles stitches it to the filter region, so each filter's region is
+     pinned to the tile (x, y 0, width, height 1). Left at SVG's default (10% past every edge)
+     it stitched to a bigger square than the tile and showed a seam at every repeat. */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='g' x='0' y='0' width='1' height='1'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .32 0 0 0 0 .27 0 0 0 0 .2 .55 0 0 0 -.22'/%3E%3C/filter%3E%3Cfilter id='f' x='0' y='0' width='1' height='1'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.01 .55' numOctaves='2' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .4 0 0 0 0 .34 0 0 0 0 .24 .3 0 0 0 -.17'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  --mottle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='640'%3E%3Cfilter id='m' x='0' y='0' width='1' height='1'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.006' numOctaves='3' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .45 0 0 0 0 .28 .35 0 0 0 -.12'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
+  --buff: #ecdfb9; /* an Edmondson ticket's card */
+}
+
+/* A sheet with the 1920 title panel's scooped corners: the corners are cut away (mask) and an
+   ink arc drawn round each cut (background), joining the ink border. --r sets the scoop. */
+.sheet, #panel, #findings, #story {
+  --r: 14px; --rule: 1.5px;
+  --arc: #0000 var(--r), var(--ink) var(--r) calc(var(--r) + var(--rule)), #0000 calc(var(--r) + var(--rule) + 0.6px);
+  --hole: #0000 var(--r), #000 calc(var(--r) + 0.5px);
+  border: var(--rule) solid var(--ink);
+  border-radius: 0;
+  background:
+    radial-gradient(circle at 0 0, var(--arc)) 0 0 / calc(var(--r) * 2) calc(var(--r) * 2) no-repeat border-box,
+    radial-gradient(circle at 100% 0, var(--arc)) 100% 0 / calc(var(--r) * 2) calc(var(--r) * 2) no-repeat border-box,
+    radial-gradient(circle at 0 100%, var(--arc)) 0 100% / calc(var(--r) * 2) calc(var(--r) * 2) no-repeat border-box,
+    radial-gradient(circle at 100% 100%, var(--arc)) 100% 100% / calc(var(--r) * 2) calc(var(--r) * 2) no-repeat border-box,
+    var(--grain) 0 0 / 240px 240px, var(--mottle) 0 0 / 640px 640px,
+    var(--panel);
+  -webkit-mask:
+    radial-gradient(circle at 0 0, var(--hole)) 0 0 / 51% 51% no-repeat,
+    radial-gradient(circle at 100% 0, var(--hole)) 100% 0 / 51% 51% no-repeat,
+    radial-gradient(circle at 0 100%, var(--hole)) 0 100% / 51% 51% no-repeat,
+    radial-gradient(circle at 100% 100%, var(--hole)) 100% 100% / 51% 51% no-repeat;
+  mask:
+    radial-gradient(circle at 0 0, var(--hole)) 0 0 / 51% 51% no-repeat,
+    radial-gradient(circle at 100% 0, var(--hole)) 100% 0 / 51% 51% no-repeat,
+    radial-gradient(circle at 0 100%, var(--hole)) 0 100% / 51% 51% no-repeat,
+    radial-gradient(circle at 100% 100%, var(--hole)) 100% 100% / 51% 51% no-repeat;
+}
+
+/* Shaded lettering, engraved as the 1920 map's "IRELAND": a fine ink outline, a white inline
+   just inside it, a hatched fill, and a solid ink shadow. Three layers of the same text: the
+   shadow (::before), the hatched fill whose wide paper stroke eats in from the edge to make the
+   inline (the element itself), and the outline on the true edge (::after). */
+.hatched {
+  position: relative; color: transparent;
+  background: repeating-linear-gradient(-55deg, var(--ink) 0 1.1px, var(--paper) 1.1px 3.3px);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-stroke: 0.085em var(--paper);
+}
+.hatched::before, .hatched::after {
+  content: attr(data-text); position: absolute; inset: 0; background: none;
+  padding: inherit;
+}
+.hatched::before {
+  z-index: -1; color: var(--ink); -webkit-text-stroke: 0.022em var(--ink);
+  transform: translate(0.055em, 0.055em);
+}
+.hatched::after { color: transparent; -webkit-text-stroke: 0.022em var(--ink); }
+
+/* Anything hidden stays hidden, even where a rule below sets display (legend rows, toggles). */
+[hidden] { display: none !important; }
+
+/* Stacking: everything drawn on the map (the scene, the swans' canvas, the 2050 wash, the
+   tickets) stays inside the map's own layer, and the piece's UI (panel, story and findings
+   drawers, the map's buttons) always sits in front of it. */
+#viewDiv { position: relative; z-index: 0; isolation: isolate; }
+#viewDiv .esri-ui { z-index: 3; }
+
+/* The map's one button: back to the whole island (app.js), a stamped paper tab like the panel. */
+.home-btn {
+  display: grid; place-items: center; width: 40px; height: 40px; padding: 0; cursor: pointer;
+  color: var(--ink); background: var(--grain) 0 0 / 240px 240px, var(--buff);
+  border: 1px solid #a8956a; border-radius: 3px; box-shadow: 0 1px 2px rgba(31, 29, 26, .25);
+  transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease;
+}
+.home-btn:hover { transform: translateY(-1px); box-shadow: 0 3px 6px rgba(31, 29, 26, .25); }
+.home-btn:active { transform: translateY(0); box-shadow: 0 1px 1px rgba(31, 29, 26, .3); }
+.home-btn:focus-visible { outline: 2px solid var(--cta); outline-offset: 2px; }
+body.future .home-btn { background: rgba(8, 18, 36, 0.9); color: #cfe9ff; border-color: rgba(60, 232, 255, 0.4); }
+#panel { z-index: 2; } /* the drawers are 2 as well (3 on a phone, where they cover the panel) */
+
+html, body, #viewDiv {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  background: var(--sea);
+  font-family: var(--sans);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+button { font-family: var(--sans); }
+
+/* The panel and both drawers are paper sheets (.sheet above). */
+
+/* ---------- Control panel ---------- */
+#panel {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 300px;
+  max-height: calc(100% - 32px);
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 18px 18px 14px;
+  font-size: 13.5px;
+}
+
+.panel-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.head-btns { display: flex; flex-direction: column; gap: 6px; align-items: stretch; }
+.eyebrow { margin: 0 0 3px; font-family: var(--fell); font-size: 14px; letter-spacing: 0.06em; color: var(--brand); }
+h1 { margin: 0; font-family: var(--serif); font-weight: 700; font-size: 23px; line-height: 1.1; }
+/* The panel's title in the map title's slab, solid at this size (hatching only reads large),
+   with a faint engraved shadow. */
+.title-shaded {
+  font-family: var(--display); font-weight: 800; font-size: 21px; line-height: 1.12; letter-spacing: 0.03em;
+  color: var(--ink); text-shadow: 1.5px 1.5px 0 rgba(31, 29, 26, 0.22);
+}
+/* The panel's title, lettered as the opening's cartouche (index.html): "RAILWAY MAP" in the shaded
+   slab (solid at this size, with its engraved shadow), a small "of", then the 1920 map's own
+   IRELAND, the same artwork as the title card. */
+.panel-title { display: flex; flex-direction: column; align-items: center; width: 172px; margin: 2px 0 0; }
+.pt-shaded {
+  font-family: var(--display); font-weight: 800; font-size: 15px; line-height: 1; letter-spacing: 0.05em;
+  text-transform: uppercase; color: var(--ink); text-shadow: 1.2px 1.2px 0 rgba(31, 29, 26, 0.25);
+}
+.pt-of { font-family: var(--fell); font-size: 10px; letter-spacing: 0.14em; line-height: 1; margin: 3px 0 2px; color: var(--ink-2); }
+.pt-hero { display: block; width: 100%; height: auto; }
+#panel .eyebrow { text-align: center; width: 172px; }
+
+.sub { margin: 14px 0 6px; color: var(--muted); font-size: 12.5px; display: flex; align-items: baseline; gap: 8px; }
+.sub strong {
+  font-family: var(--serif); font-weight: 700; font-size: 34px; line-height: 1;
+  color: var(--ink); font-variant-numeric: lining-nums tabular-nums;
+}
+
+.slider-row { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.slider-row input { flex: 1; accent-color: var(--cta); cursor: pointer; }
+#play {
+  flex: none; width: 34px; height: 34px;
+  border: 0; border-radius: 50%;
+  background: var(--ink); color: #fff; cursor: pointer; font-size: 11px;
+  box-shadow: 0 2px 6px rgba(28, 42, 37, 0.25);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+#play:hover { transform: scale(1.06); background: var(--brand); }
+
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 12px 0; }
+#panel > .stats { grid-template-columns: repeat(2, 1fr); }
+.stats div { margin: 0; padding: 8px 8px 7px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); }
+.stats dt { font-size: 10.5px; color: var(--muted); line-height: 1.25; }
+.stats dd { margin: 3px 0 0; font-family: var(--serif); font-size: 15px; font-weight: 700; font-variant-numeric: lining-nums tabular-nums; }
+/* The panel's figures as old Edmondson railway tickets: buff card, a small roman heading, and
+   the figure in heavy condensed capitals, with a band in its line's colour. */
+#panel > .stats div {
+  position: relative; padding: 9px 6px 7px; text-align: center;
+  background: var(--grain) 0 0 / 240px 240px, var(--buff);
+  border: 1px solid #c8b78a; border-radius: 3px;
+  box-shadow: inset 0 3px 0 var(--band, var(--ink)), 0 1px 1px rgba(31, 29, 26, 0.18);
+}
+#panel > .stats dt { font-family: var(--fell); font-size: 12px; color: var(--ink-2); letter-spacing: 0.02em; }
+#panel > .stats dd {
+  margin-top: 2px; font-family: var(--sans); font-weight: 800; font-stretch: 72%; font-size: 17px; white-space: nowrap;
+  letter-spacing: 0.01em; text-transform: uppercase; color: var(--ink);
+}
+#panel > .stats div:nth-child(1) { --band: var(--brand); }
+#panel > .stats div:nth-child(2) { --band: var(--line-lost); }
+
+.legend { list-style: none; margin: 0 0 10px; padding: 10px 12px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); font-size: 12.5px; }
+.legend li { display: flex; align-items: center; gap: 9px; margin: 5px 0; color: var(--ink-2); }
+.swatch { flex: none; display: inline-block; width: 22px; height: 0; border-top: 3px solid; border-radius: 2px; }
+.swatch.current { border-color: var(--current); }
+.swatch.open-then { border-color: var(--open-then); }
+.swatch.closed { border-top: 2px dashed var(--closed); }
+.swatch.unknown { border-top: 2px dotted var(--unknown); }
+
+.town-dot {
+  flex: none; display: inline-block; width: 10px; height: 10px; margin: 0 6px;
+  border-radius: 50%; background: var(--town); border: 1px solid #fff;
+  box-shadow: 0 0 0 1px var(--town);
+}
+.landmark-keys { gap: 12px !important; flex-wrap: wrap; font-size: 12px; padding-top: 6px; border-top: 1px solid var(--line); }
+.landmark-keys > span { display: inline-flex; align-items: center; gap: 5px; }
+.mark { display: inline-block; width: 10px; height: 10px; border: 1.5px solid #fff; box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25); }
+.mark.city { background: #1f2a44; border-radius: 50%; }
+.mark.historic { background: #b7791f; transform: rotate(45deg) scale(0.85); }
+.mark.railway { background: #9c3d1e; }
+
+.towns-stat {
+  margin: 0 0 10px; padding: 9px 12px; font-size: 12.5px; color: var(--ink-2);
+  background: var(--town-tint); border-radius: var(--radius); line-height: 1.45;
+}
+.towns-stat strong { color: var(--town-ink); font-variant-numeric: tabular-nums; }
+
+/* Checkboxes drawn as small switches */
+.toggle { display: flex; gap: 9px; align-items: center; font-size: 12.5px; margin: 6px 0; color: var(--ink-2); cursor: pointer; }
+.toggle input {
+  appearance: none; -webkit-appearance: none; flex: none; margin: 0;
+  width: 28px; height: 16px; border-radius: 999px; background: #d3d0c8; position: relative; cursor: pointer;
+  transition: background 0.15s ease;
+}
+.toggle input::after {
+  content: ""; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 50%;
+  background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25); transition: transform 0.15s ease;
+}
+.toggle input:checked { background: var(--brand); }
+.toggle input:checked::after { transform: translateX(12px); }
+.toggle input:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+.impact { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 10px; }
+.impact summary { cursor: pointer; font-family: var(--serif); font-weight: 700; color: var(--ink); }
+.impact .stats { margin: 10px 0 4px; }
+.status { margin: 10px 0 0; font-size: 11.5px; color: var(--muted); }
+.status.error { color: #c92a2a; }
+.note { margin: 8px 0 0; font-size: 11px; color: var(--muted); line-height: 1.45; }
+.note a, .impact a { color: var(--brand); }
+
+.story-btn, .findings-btn {
+  padding: 6px 12px; border-radius: var(--radius); font-size: 11px; font-weight: 700; cursor: pointer;
+  text-transform: uppercase; letter-spacing: 0.08em; font-stretch: 110%;
+  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.story-btn { border: 1px solid var(--cta); background: var(--cta); color: #fff; box-shadow: 1.5px 1.5px 0 var(--ink); }
+.story-btn:hover { transform: translateY(-1px); background: var(--cta-hover); }
+.findings-btn { border: 1px solid var(--ink); background: var(--card); color: var(--ink); }
+.findings-btn:hover { border-color: var(--ink); }
+
+/* ---------- Drawers (findings and story share a place) ---------- */
+#findings, #story {
+  --r: 18px;
+  position: absolute;
+  top: 16px; left: 16px; bottom: 16px;
+  width: 400px;
+  display: flex; flex-direction: column;
+  z-index: 2;
+  overflow: hidden;
+}
+#findings[hidden], #story[hidden] { display: none; }
+/* Drawers slide and fade in and out (drawer.js), in step with the camera gliding over. */
+#findings.drawer-in, #story.drawer-in { animation: drawer-in 0.38s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+#findings.drawer-out, #story.drawer-out { animation: drawer-out 0.26s ease-in both; pointer-events: none; }
+@keyframes drawer-in { from { opacity: 0; transform: translateX(-28px); } to { opacity: 1; transform: none; } }
+@keyframes drawer-out { to { opacity: 0; transform: translateX(-28px); } }
+@media (prefers-reduced-motion: reduce) {
+  #findings.drawer-in, #story.drawer-in, #findings.drawer-out, #story.drawer-out { animation: none; }
+}
+
+#findings header {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 16px 20px 12px; border-bottom: 1px solid var(--line);
+}
+#findings header h2 { margin: 0; font-family: var(--fell); font-weight: 400; font-size: 20px; line-height: 1.2; letter-spacing: 0.03em; }
+/* Scrollbars in the paper's tones. */
+#panel, .md, #storyBody { scrollbar-width: thin; scrollbar-color: #bfb293 transparent; }
+#closeFindings, #closeStory {
+  width: 30px; height: 30px; border: 0; border-radius: 50%;
+  background: rgba(28, 42, 37, 0.06); font-size: 14px; cursor: pointer; color: var(--ink-2);
+}
+#closeFindings:hover, #closeStory:hover { background: rgba(28, 42, 37, 0.12); }
+
+.md { overflow-y: auto; padding: 4px 20px 20px; font-size: 13px; line-height: 1.6; color: var(--ink-2); }
+.md h1 { font-family: var(--fell); font-weight: 400; font-size: 26px; letter-spacing: 0.03em; color: var(--ink); }
+.md h2 { font-family: var(--serif); font-size: 17px; color: var(--ink); margin: 24px 0 6px; padding-top: 14px; border-top: 1px solid var(--line); }
+.md h2:first-child { border-top: 0; margin-top: 8px; }
+.md h3 { font-size: 13.5px; color: var(--ink); }
+.md p, .md ul, .md ol { margin: 6px 0; }
+.md ul, .md ol { padding-left: 20px; }
+.md table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 12px; background: var(--card); }
+.md th, .md td { text-align: left; padding: 5px 7px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.md th { color: var(--muted); font-weight: 600; background: #efe9d8; }
+.md a { color: var(--brand); word-break: break-word; }
+
+.scene-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin: 2px 0 6px; padding: 5px 11px;
+  border: 1px solid var(--line); border-radius: var(--radius); background: var(--card);
+  font-size: 12px; cursor: pointer; color: var(--ink);
+}
+.scene-btn::before { content: "◎"; color: var(--cta); }
+.scene-btn:hover, .scene-btn.active { border-color: var(--cta); background: #fbeee6; }
+
+.town-link {
+  padding: 0; border: 0; background: none; font: inherit;
+  color: var(--town); text-decoration: underline dotted; cursor: pointer;
+}
+
+/* ---------- Story ---------- */
+#story header {
+  position: relative; display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px 14px;
+}
+#story .story-count { font-family: var(--fell); font-size: 14px; color: var(--accent); letter-spacing: 0.06em; }
+.story-progress { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--line); }
+.story-progress span { display: block; height: 100%; width: 0; background: var(--accent); transition: width 0.4s ease, background 0.4s ease; }
+
+#storyBody { flex: 1; overflow-y: auto; padding: 0 20px 16px; font-size: 13.5px; line-height: 1.6; color: var(--ink-2); }
+.story-hero { position: relative; margin: 0 -20px 6px; padding: 22px 20px 16px; background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent 75%); }
+.story-num {
+  position: absolute; right: 16px; top: 4px; font-family: var(--display); font-weight: 800;
+  font-size: 70px; line-height: 1; color: var(--accent); opacity: 0.13; pointer-events: none;
+}
+.story-kicker { margin: 0 0 6px; font-family: var(--fell); font-size: 15px; letter-spacing: 0.06em; color: var(--accent); }
+#storyBody h2 { margin: 0; font-family: var(--serif); font-weight: 700; font-size: 24px; line-height: 1.18; color: var(--ink); max-width: 92%; }
+#storyBody p { margin: 10px 0; }
+#storyBody b { color: var(--ink); }
+#storyBody .story-src { font-size: 10.5px; color: var(--muted); line-height: 1.45; margin-top: 14px; }
+.story-callout {
+  margin: 12px 0; padding: 10px 14px; border-radius: var(--radius);
+  background: color-mix(in srgb, var(--accent) 9%, #fff); border-left: 3px solid var(--accent); color: var(--ink);
+}
+/* The causes, in the story's second chapter: a short list, each cause in bold. */
+.story-list { margin: 8px 0 12px; padding-left: 18px; }
+.story-list li { margin: 0 0 7px; line-height: 1.45; }
+.story-fair { margin: 14px 0; padding: 10px 14px; border-radius: var(--radius); background: #efe9d8; font-size: 12.5px; }
+.story-fair strong { display: block; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+
+#story footer {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 12px 20px 16px; border-top: 1px solid var(--line); background: rgba(255, 255, 255, 0.5);
+}
+#story footer button {
+  padding: 7px 15px; border-radius: var(--radius); border: 1px solid var(--ink); background: var(--card);
+  font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; color: var(--ink);
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+#story footer button.primary { background: var(--ink); color: #fff; border-color: var(--ink); }
+#story footer button.primary:hover { transform: translateX(2px); filter: brightness(1.2); }
+#story footer button:disabled { opacity: 0.35; cursor: default; transform: none; }
+.story-dots { display: flex; gap: 6px; }
+.story-dots button {
+  width: 8px; height: 8px; padding: 0 !important; border: 0 !important; border-radius: 50% !important;
+  background: #d9d4c8 !important; cursor: pointer; transition: width 0.25s ease, background 0.25s ease;
+}
+.story-dots button.on { width: 20px; border-radius: 999px !important; background: var(--accent) !important; }
+
+/* ---------- Charts (validated palette; text stays in ink colours, never the series colour) ---------- */
+:root {
+  --viz-rail: #3e6a4c; /* the map's company green: the railway */
+  --viz-people: #2a78d6;
+  --viz-cars: #b23a48; /* brake-light crimson: not orange, which means today's railway on the map */
+  --viz-roads: #6250d6;
+  --viz-grid: #e7e3d9;
+}
+.viz { position: relative; margin: 14px 0 6px; padding: 12px 12px 8px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); }
+.viz-row { margin-bottom: 4px; }
+.viz-row svg { display: block; width: 100%; height: auto; overflow: visible; }
+.viz-head { display: flex; align-items: baseline; gap: 6px; font-size: 12px; color: var(--ink); }
+.viz-title { font-weight: 600; }
+.viz-note { color: var(--muted); font-size: 11px; }
+.viz-key { display: inline-block; width: 10px; height: 3px; border-radius: 2px; transform: translateY(-3px); }
+.viz-base { stroke: var(--viz-grid); stroke-width: 1; }
+.viz-band { fill: #f6f2e9; }
+.viz-band-label { font-size: 8.5px; fill: var(--muted); }
+.viz-dot { stroke: #fff; stroke-width: 2; }
+.viz-end { font-size: 11px; font-weight: 700; fill: var(--ink); }
+.viz-start { font-size: 10px; fill: var(--muted); }
+.viz-tick { font-size: 9.5px; fill: var(--muted); font-variant-numeric: tabular-nums; }
+.viz-hair { stroke: #868e96; stroke-width: 1; }
+.viz-tip {
+  position: absolute; top: 8px; right: 8px; min-width: 150px; padding: 8px 10px;
+  background: var(--ink); color: #fff; border-radius: 10px; box-shadow: 0 6px 18px rgba(28, 42, 37, 0.3);
+  font-size: 12px; pointer-events: none; z-index: 1;
+}
+.viz-tip-year { font-weight: 700; margin-bottom: 4px; }
+.viz-tip div:not(.viz-tip-year) { display: flex; align-items: center; gap: 6px; }
+.viz-tip b { margin-left: auto; padding-left: 10px; font-variant-numeric: tabular-nums; }
+.viz-table summary { cursor: pointer; font-size: 11.5px; color: var(--muted); margin-top: 6px; }
+.viz-table table { width: 100%; border-collapse: collapse; font-size: 11.5px; margin-top: 6px; font-variant-numeric: tabular-nums; }
+.viz-table th, .viz-table td { text-align: right; padding: 3px 4px; border-bottom: 1px solid #f1ede4; }
+.viz-table th:first-child, .viz-table td:first-child { text-align: left; }
+
+/* Horizontal bars (one measure, a few categories) */
+.viz-bars { display: grid; gap: 9px; }
+.viz-bar-row { display: grid; grid-template-columns: 112px 1fr; align-items: center; gap: 10px; font-size: 12px; color: var(--ink); }
+.viz-bar-label { line-height: 1.25; }
+.viz-bar-label small { display: block; color: var(--muted); font-size: 10.5px; }
+.viz-bar-track { position: relative; height: 16px; display: flex; align-items: center; gap: 8px; }
+.viz-bar { height: 12px; border-radius: 0 4px 4px 0; min-width: 4px; transition: width 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.viz-bar-value { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.viz-bar-row:hover .viz-bar { filter: brightness(1.08); }
+
+/* Headline numbers */
+.viz-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin: 14px 0; }
+.viz-stat {
+  position: relative; padding: 11px 12px 10px 14px; background: var(--card);
+  border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
+}
+.viz-stat::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--stat-accent, var(--accent)); }
+.viz-stat-value { font-family: var(--serif); font-size: 24px; font-weight: 700; line-height: 1.05; color: var(--ink); font-variant-numeric: lining-nums; }
+.viz-stat-label { font-size: 11.5px; color: var(--ink-2); margin-top: 4px; line-height: 1.35; }
+.viz-stat-sub { font-size: 10.5px; color: var(--muted); margin-top: 2px; }
+
+/* Fade each chapter in */
+.story-content, .story-hero { animation: story-in 0.45s ease both; }
+.story-content { animation-delay: 0.06s; }
+@keyframes story-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .story-content, .story-hero { animation: none; }
+  .viz-bar, .story-progress span { transition: none; }
+}
+
+@media (max-width: 600px) {
+  #story, #findings { inset: 0; width: auto; z-index: 3; background: var(--paper); border: 0; -webkit-mask: none; mask: none; }
+  #panel { top: auto; bottom: 16px; left: 16px; right: 16px; width: auto; max-height: 55vh; }
+  .head-btns { flex-direction: row; }
+}
+
+/* ---------- Opening fly-in through cloud (intro.js) ---------- */
+#intro {
+  position: fixed; inset: 0; z-index: 10; overflow: hidden; cursor: pointer;
+  --flight: 7000ms;
+  transition: opacity 0.8s ease;
+}
+#intro.done { opacity: 0; pointer-events: none; }
+/* Title card over the map while it loads: a cartouche on the green of the map's margin, after
+   the 1920 map's title panel. The green lifts away when the flight starts. */
+.sky-bg {
+  position: absolute; inset: 0;
+  background:
+    var(--grain) 0 0 / 240px 240px,
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.07) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(40, 60, 40, 0.05) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(70, 90, 60, 0.13) 100%) 0 0 / 25% 33.333%,
+    var(--mottle) 0 0 / 640px 640px,
+    radial-gradient(ellipse at 50% 46%, #dce7d6 0%, #cbdbc6 55%, #b7cdb2 100%);
+  transition: opacity 1.2s ease;
+}
+/* Folded and mounted on linen, as the old map is: cloth strips between the panels. */
+.sky-bg::before, .sky-bg::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  --cloth: repeating-linear-gradient(45deg, #e9e5d8 0 1px, #d8d3c4 1px 2px);
+  --seam: transparent 0 calc(var(--p) - 7px), rgba(40, 45, 35, 0.22) calc(var(--p) - 7px) calc(var(--p) - 6px),
+    transparent calc(var(--p) - 6px) calc(var(--p) - 1px), rgba(40, 45, 35, 0.22) calc(var(--p) - 1px) var(--p);
+}
+.sky-bg::before {
+  -webkit-mask: repeating-linear-gradient(90deg, transparent 0 calc(25% - 7px), #000 calc(25% - 7px) 25%);
+  mask: repeating-linear-gradient(90deg, transparent 0 calc(25% - 7px), #000 calc(25% - 7px) 25%);
+  --p: 25%;
+  background: repeating-linear-gradient(90deg, var(--seam)), var(--cloth);
+}
+.sky-bg::after {
+  -webkit-mask: repeating-linear-gradient(0deg, transparent 0 calc(33.333% - 7px), #000 calc(33.333% - 7px) 33.333%);
+  mask: repeating-linear-gradient(0deg, transparent 0 calc(33.333% - 7px), #000 calc(33.333% - 7px) 33.333%);
+  --p: 33.333%;
+  background: repeating-linear-gradient(0deg, var(--seam)), var(--cloth);
+}
+#intro.flying .sky-bg { opacity: 0; }
+
+.intro-title {
+  position: absolute; left: 50%; top: 47%; transform: translate(-50%, -50%);
+  text-align: center; color: var(--ink); pointer-events: none;
+}
+.cartouche {
+  --r: clamp(22px, 4vw, 44px); --panel: var(--paper);
+  box-sizing: border-box; width: min(760px, 92vw);
+  padding: clamp(22px, 4vw, 40px) clamp(18px, 4vw, 48px) clamp(20px, 3.4vw, 34px);
+  isolation: isolate;
+}
+.cartouche p { margin: 0; }
+.c-then { font-family: var(--fell); font-size: clamp(20px, 3.2vw, 30px); letter-spacing: 0.08em; }
+.c-shaded {
+  margin-top: 0.25em !important; font-family: var(--display); font-weight: 800; font-size: clamp(19px, 3.9vw, 37px);
+  line-height: 1.05; letter-spacing: 0.04em; text-transform: uppercase;
+}
+/* On the old map "RAILWAY MAP" is shaded without the inline: just a hair of it here. */
+.c-shaded.hatched { -webkit-text-stroke-width: 0.035em; }
+.c-of { font-family: var(--fell); font-size: clamp(12px, 1.6vw, 15px); letter-spacing: 0.12em; margin: 0.3em 0 0.1em !important; }
+.c-hero { margin: 0.12em auto 0.05em; width: min(100%, 680px); }
+.c-hero-art { display: block; width: 100%; height: auto; }
+.c-roman { margin-top: 0.9em !important; font-family: var(--fell); font-size: clamp(16px, 2.4vw, 22px); letter-spacing: 0.05em; }
+.c-grot {
+  margin-top: 0.15em !important; font-family: var(--sans); font-weight: 800; font-stretch: 112%;
+  font-size: clamp(15px, 2.5vw, 23px); letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink); text-shadow: 1.5px 1.5px 0 rgba(31, 29, 26, 0.28);
+}
+.c-years { margin-top: 0.4em !important; font-family: var(--serif); font-size: clamp(16px, 2.4vw, 22px); font-variant-numeric: lining-nums; }
+.intro-skip { margin: 1.1em 0 0 !important; font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--ink-2); }
+/* Portrait screens fold the other way: two panels across, four down. */
+@media (max-aspect-ratio: 3/4) {
+  .sky-bg { background-size: 240px 240px, auto, auto, 50% 25%, 640px 640px, auto; }
+  .sky-bg::before {
+    --p: 50%;
+    -webkit-mask: repeating-linear-gradient(90deg, transparent 0 calc(50% - 7px), #000 calc(50% - 7px) 50%);
+    mask: repeating-linear-gradient(90deg, transparent 0 calc(50% - 7px), #000 calc(50% - 7px) 50%);
+  }
+  .sky-bg::after {
+    --p: 25%;
+    -webkit-mask: repeating-linear-gradient(0deg, transparent 0 calc(25% - 7px), #000 calc(25% - 7px) 25%);
+    mask: repeating-linear-gradient(0deg, transparent 0 calc(25% - 7px), #000 calc(25% - 7px) 25%);
+  }
+}
+#intro.flying .intro-title { animation: title-out calc(var(--flight) * 0.3) ease-in forwards; }
+@keyframes title-out { 0%, 30% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.08); } }
+
+/* With a drawer open on a mid-width screen, the panel steps aside so the map keeps room
+   (PANEL_ASIDE_W in app.js). */
+@media (min-width: 601px) and (max-width: 1279px) {
+  body.story-open #panel, body.findings-open #panel { opacity: 0; transform: translateX(16px); pointer-events: none; }
+}
+
+/* Hold the panel back until the camera arrives */
+#panel { transition: opacity 0.6s ease, transform 0.6s ease; }
+/* After the opening lands, the panel comes in with the railway lines and Britain's fade (intro.js). */
+body.landing #panel { transition: opacity 1.8s ease, transform 1.8s ease; }
+body.intro-on #panel { opacity: 0; transform: translateX(12px); pointer-events: none; }
+/* The home button comes in with the panel, from the other side. */
+.home-btn { transition: opacity 1.8s ease, transform .15s ease, box-shadow .15s ease, background-color .15s ease; }
+body.intro-on .home-btn { opacity: 0; transform: translateX(-12px); pointer-events: none; }
+
+/* A line's popup as a railway card ticket of the time (app.js, popupContent): buff card stock,
+   a perforated edge, the company across the top, FROM and TO in heavy capitals, a band in the
+   line's map colour, a red serial number. */
+.ticket {
+  --t-ink: #2a2620; --t-card: #efe3c6; --t-band: var(--line-kept, #2c4d85);
+  position: relative; margin: 2px 0 0; padding: 10px 14px 9px 22px;
+  background: var(--t-card) var(--grain, none); color: var(--t-ink);
+  border-radius: 4px; box-shadow: 0 1px 0 rgba(0,0,0,.08), inset 0 0 0 1px rgba(60,48,30,.25);
+  font-family: var(--fell, "IM Fell English SC", serif);
+}
+.ticket::before {
+  /* the perforations down the left edge */
+  content: ""; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 4px;
+  background: radial-gradient(circle, rgba(60,48,30,.45) 1.2px, transparent 1.6px) 0 0 / 4px 7px repeat-y;
+}
+.ticket--closed { --t-band: var(--line-lost, #b5332a); }
+.ticket--unknown { --t-band: #948263; }
+.ticket-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px;
+  font-size: 11px; letter-spacing: .06em; text-transform: uppercase; border-bottom: 1px solid rgba(60,48,30,.35); padding-bottom: 4px; }
+.ticket-no { font-family: "Archivo", sans-serif; font-weight: 700; color: #b5332a; letter-spacing: .12em; }
+.ticket-line { margin-top: 5px; font-family: "Libre Caslon Text", serif; font-style: italic; font-size: 12px; }
+.ticket-route { display: grid; grid-template-columns: auto 1fr; align-items: baseline; column-gap: 8px; row-gap: 1px; margin: 7px 0 6px; }
+.ticket-label { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; opacity: .7; }
+.ticket-place { font-family: "Archivo", sans-serif; font-weight: 800; font-stretch: 85%; font-size: 17px; line-height: 1.1;
+  text-transform: uppercase; letter-spacing: .02em; }
+.ticket-band { margin: 0 -14px 0 -22px; padding: 3px 14px 3px 22px; background: var(--t-band); color: #f7f1e1;
+  font-family: "Archivo", sans-serif; font-weight: 700; font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; text-align: center; }
+.ticket-facts { display: flex; gap: 14px; margin: 7px 0 4px; font-size: 11px; }
+.ticket-facts div { display: flex; flex-direction: column; }
+.ticket-facts dt { font-size: 9.5px; text-transform: uppercase; letter-spacing: .08em; opacity: .65; }
+.ticket-facts dd { margin: 0; font-family: "Archivo", sans-serif; font-weight: 600; font-size: 12px; }
+.ticket-src { display: block; font-size: 10px; color: inherit; opacity: .6; }
+
+/* The ticket as the whole popup (ticketpop.js): no frame, pinned above the point clicked by a
+   little tail in the card's colour, closed by a punched hole in its corner. */
+.ticket-pop { position: absolute; left: 0; top: 0; z-index: 6; width: 300px; max-width: calc(100vw - 32px);
+  margin: 0; pointer-events: none; will-change: transform; /* the empty box at the point lets clicks through */
+  filter: drop-shadow(0 6px 14px rgba(40, 30, 15, .28)) drop-shadow(0 1px 1px rgba(40, 30, 15, .25)); }
+.ticket-pop[hidden] { display: none; }
+.ticket-pop-body { position: relative; transform: translate(-50%, calc(-100% - 14px)); pointer-events: auto; }
+.ticket-pop .ticket { margin: 0; }
+.ticket-tail { position: absolute; left: 0; top: 0; width: 16px; height: 16px; transform: translate(-50%, -22px) rotate(45deg);
+  background: #efe3c6; box-shadow: 1px 1px 0 rgba(60,48,30,.25); }
+.ticket-close { position: absolute; z-index: 2; right: 7px; top: 7px; width: 20px; height: 20px; padding: 0; border: 0; border-radius: 50%;
+  background: #d9c9a3; color: #5a4d38; font: 15px/20px Georgia, serif; cursor: pointer;
+  box-shadow: inset 0 1px 2px rgba(60,48,30,.5); }
+.ticket-pop .ticket-top { padding-right: 24px; }
+.ticket-close:hover, .ticket-close:focus-visible { background: #d6c59d; color: #2a2620; outline: none; }
+.ticket-foot { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.ticket-zoom { font-family: var(--fell, serif); font-size: 11px; color: #2c4d85; text-decoration: none; letter-spacing: .04em; }
+.ticket-zoom:hover { text-decoration: underline; }
+
+/* A town that lost its railway: the band in the towns' plum. */
+.ticket--town { --t-band: var(--town, #2f5e48); }
+.ticket--town .ticket-route { grid-template-columns: auto 1fr; }
+
+/* The swans' card (swans.js): a leaf of an old Irish manuscript by night. */
+.lir-pop { width: 290px; }
+.lir-pop .ticket-tail { background: #142a4c; box-shadow: none; }
+.lir-pop .ticket-close { background: rgba(214, 190, 120, .25); color: #e9dcae; box-shadow: inset 0 0 0 1px rgba(214,190,120,.6); }
+.lir {
+  position: relative; overflow: hidden; padding: 16px 20px 14px; border-radius: 6px; color: #e7e3d6;
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(120, 150, 210, .28), transparent 60%),
+    radial-gradient(90% 70% at 50% 110%, rgba(90, 60, 140, .35), transparent 65%),
+    linear-gradient(170deg, #1b3561, #0f1f3c 60%, #0b1630);
+  border: 1px solid #c9a95a;
+  box-shadow: inset 0 0 0 3px #0f1f3c, inset 0 0 0 4px rgba(201, 169, 90, .7), inset 0 0 40px rgba(150, 180, 255, .18);
+  font-family: "Libre Caslon Text", serif; font-size: 12.5px; line-height: 1.5;
+}
+/* the knotwork: a fine interlace of gold along the inner edge */
+.lir::before {
+  content: ""; position: absolute; inset: 6px; border-radius: 4px; pointer-events: none;
+  background:
+    repeating-linear-gradient(45deg, rgba(214,190,120,.55) 0 1px, transparent 1px 7px) top / 100% 5px no-repeat,
+    repeating-linear-gradient(-45deg, rgba(214,190,120,.55) 0 1px, transparent 1px 7px) bottom / 100% 5px no-repeat,
+    repeating-linear-gradient(45deg, rgba(214,190,120,.55) 0 1px, transparent 1px 7px) left / 5px 100% no-repeat,
+    repeating-linear-gradient(-45deg, rgba(214,190,120,.55) 0 1px, transparent 1px 7px) right / 5px 100% no-repeat;
+}
+.lir-shimmer { position: absolute; inset: -40%; pointer-events: none; mix-blend-mode: screen;
+  background: linear-gradient(115deg, transparent 40%, rgba(200, 220, 255, .16) 48%, rgba(255,255,255,.28) 50%, rgba(200,220,255,.16) 52%, transparent 60%);
+  animation: lir-shimmer 6s ease-in-out infinite; }
+@keyframes lir-shimmer { 0% { transform: translateX(-45%); } 55%, 100% { transform: translateX(45%); } }
+.lir-title { position: relative; font-family: "Uncial Antiqua", "Libre Caslon Text", serif; font-size: 26px; line-height: 1.1;
+  text-align: center; color: #f3e6b8; letter-spacing: .02em;
+  text-shadow: 0 0 10px rgba(240, 220, 150, .45), 0 0 1px rgba(0,0,0,.6); }
+.lir-sub { position: relative; text-align: center; font-style: italic; font-size: 11.5px; color: #b9c4dc; margin: 2px 0 9px; }
+.lir p { position: relative; margin: 0 0 8px; }
+.lir-waters { position: relative; list-style: none; margin: 0 0 8px; padding: 0; }
+.lir-waters li { display: flex; gap: 10px; padding: 2px 0; border-bottom: 1px dotted rgba(201,169,90,.35); }
+.lir-waters span { min-width: 64px; font-family: "Uncial Antiqua", serif; font-size: 11px; color: #e3c977; }
+.lir-end { font-style: italic; color: #cfd6e6; text-align: center; }
+/* feathers drifting down the card */
+.lir-feathers { position: absolute; inset: 0; pointer-events: none; }
+.lir-feathers i { position: absolute; top: -12px; width: 5px; height: 11px; border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
+  background: rgba(255, 255, 255, .85); box-shadow: 0 0 6px rgba(220, 235, 255, .8); opacity: 0;
+  animation: lir-feather 7s linear infinite; }
+.lir-feathers i:nth-child(1) { left: 12%; animation-delay: 0s; }
+.lir-feathers i:nth-child(2) { left: 31%; animation-delay: 1.4s; animation-duration: 8s; }
+.lir-feathers i:nth-child(3) { left: 50%; animation-delay: 2.6s; }
+.lir-feathers i:nth-child(4) { left: 68%; animation-delay: .7s; animation-duration: 9s; }
+.lir-feathers i:nth-child(5) { left: 84%; animation-delay: 3.5s; }
+.lir-feathers i:nth-child(6) { left: 22%; animation-delay: 4.8s; animation-duration: 8.5s; }
+.lir-feathers i:nth-child(7) { left: 76%; animation-delay: 5.9s; }
+@keyframes lir-feather {
+  0% { transform: translate(0, 0) rotate(-20deg); opacity: 0; }
+  10% { opacity: .9; }
+  50% { transform: translate(14px, 140px) rotate(25deg); }
+  90% { opacity: .6; }
+  100% { transform: translate(-6px, 290px) rotate(-15deg); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .lir-shimmer, .lir-feathers i { animation: none; } .lir-feathers { display: none; } }
+
+/* ---------- The panel in the 1920 sheet's own language ----------
+   No modern controls: the key is the sheet's "Reference" box, the switches inked tick boxes, the
+   slider a ruled line with an ink lozenge, the play button an ink seal, the buttons letterpress. */
+
+/* The year line: engraver's small caps, the year in the title's slab. */
+#panel .sub { font-family: var(--fell); font-size: 13.5px; letter-spacing: .02em; color: var(--ink-2); }
+#panel .sub strong { font-family: var(--display); font-weight: 800; font-size: 34px; letter-spacing: .01em;
+  text-shadow: 1.5px 1.5px 0 rgba(31, 29, 26, .18); }
+
+/* The slider: a double rule, with the years gone by inked in red, and an ink lozenge to drag. */
+#panel .slider-row input[type=range] {
+  -webkit-appearance: none; appearance: none; height: 14px; background: transparent; accent-color: auto;
+}
+#panel .slider-row input[type=range]::-webkit-slider-runnable-track {
+  height: 5px; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink);
+  background: linear-gradient(var(--current), var(--current)) 0 / var(--fill, 50%) 100% no-repeat, var(--paper);
+}
+#panel .slider-row input[type=range]::-moz-range-track {
+  height: 3px; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); background: var(--paper);
+}
+#panel .slider-row input[type=range]::-moz-range-progress { height: 3px; background: var(--current); }
+#panel .slider-row input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 13px; height: 13px; margin-top: -5px; background: var(--ink);
+  transform: rotate(45deg); border: 2px solid var(--paper); box-shadow: 0 0 0 1px var(--ink); cursor: grab;
+}
+#panel .slider-row input[type=range]::-moz-range-thumb {
+  width: 10px; height: 10px; background: var(--ink); transform: rotate(45deg); border: 2px solid var(--paper);
+  border-radius: 0; box-shadow: 0 0 0 1px var(--ink); cursor: grab;
+}
+/* Play: an ink seal with a ring inside its rim. */
+#panel #play { background: var(--ink); color: var(--paper); box-shadow: inset 0 0 0 2px var(--ink), inset 0 0 0 3px var(--paper), 1px 1px 0 rgba(31,29,26,.3); font-size: 10px; }
+#panel #play:hover { background: var(--current); transform: none; box-shadow: inset 0 0 0 2px var(--current), inset 0 0 0 3px var(--paper); }
+
+/* The key, as the 1920 sheet's "Reference" box: a double rule on the paper, a heading in
+   spaced small caps, and the lines drawn as on the map, cased in a darker tone of themselves. */
+#panel .legend {
+  position: relative; margin: 14px 0 12px; padding: 14px 12px 9px; background: transparent;
+  border: 3px double var(--ink); border-radius: 0; font-family: var(--serif); font-size: 12px;
+}
+#panel .legend::before {
+  content: "Reference"; position: absolute; top: -9px; left: 50%; transform: translateX(-50%);
+  padding: 0 8px; background: var(--paper); font-family: var(--fell); font-size: 13px; letter-spacing: .22em; color: var(--ink);
+}
+#panel .legend li { margin: 4px 0; color: var(--ink-2); line-height: 1.3; }
+#panel .swatch { width: 26px; height: 4px; border: 0; border-radius: 2px; }
+#panel .swatch.current { background: var(--line-kept); box-shadow: 0 0 0 .8px #192c4c; }
+#panel .swatch.open-then { background: var(--line-lost); box-shadow: 0 0 0 .8px #6a1e18; }
+#panel .swatch.closed { height: 0; border-top: 1.5px dashed var(--closed); border-radius: 0; box-shadow: none; }
+#panel .swatch.unknown { height: 0; border-top: 2px dotted var(--unknown); border-radius: 0; box-shadow: none; }
+/* The 1920s symbol: ink edges round bars of ink and paper (lines3d.js) */
+#panel .swatch.period { width: 30px; height: 4px; border: 1px solid #25221d; border-radius: 0; box-shadow: none;
+  background: repeating-linear-gradient(90deg, #f6efdc 0 4px, #25221d 4px 8px); }
+#panel .swatch.period.current { background: repeating-linear-gradient(90deg, #f6efdc 0 4px, var(--line-kept) 4px 8px); }
+#panel .swatch.period.open-then { background: repeating-linear-gradient(90deg, #f6efdc 0 4px, var(--line-lost) 4px 8px); }
+/* the towns that lost their railway: a little paper building, outlined in slate under its
+   slate roof, as on the map (town-model.js; colours from COLORS.building and .roof in app.js) */
+#panel .town-dot { position: relative; flex: none; width: 9px; height: 11px; margin: 6px 8px 0 8px;
+  border: 1px solid #55585e; border-top: 0; border-radius: 0; box-shadow: 0 1px 0 rgba(31,29,26,.25);
+  background: var(--grain) 0 0 / 60px 60px, #efe6cf; }
+#panel .town-dot::before { content: ""; position: absolute; left: -3px; right: -3px; top: -6px; height: 6px;
+  background: #55585e; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+
+/* The towns cut off: a ticket stub in the towns' green, the figures in the tickets' heavy capitals. */
+#panel .towns-stat {
+  position: relative; margin: 0 0 12px; padding: 9px 12px 9px 18px; font-family: var(--serif); font-size: 12px;
+  background: var(--grain) 0 0 / 240px 240px, var(--buff); border: 1px solid #c8b78a; border-radius: 3px;
+  box-shadow: inset 4px 0 0 var(--town), 0 1px 1px rgba(31, 29, 26, .18);
+}
+#panel .towns-stat strong { font-family: var(--sans); font-weight: 800; font-stretch: 72%; font-size: 15px; color: var(--town-ink); letter-spacing: .01em; }
+
+/* The switches: inked tick boxes, the tick drawn by hand. */
+#panel .toggle { font-family: var(--serif); font-size: 12px; margin: 5px 0; gap: 10px; }
+#panel .toggle input {
+  width: 13px; height: 13px; border-radius: 0; background: var(--paper); border: 1.2px solid var(--ink);
+  box-shadow: 1px 1px 0 rgba(31, 29, 26, .25);
+}
+#panel .toggle input::after { content: ""; top: -3px; left: 2px; width: 5px; height: 10px; border-radius: 0; background: none;
+  border: solid var(--ink); border-width: 0 2px 2px 0; transform: rotate(40deg) scale(0); box-shadow: none; transition: transform .12s ease; }
+#panel .toggle input:checked { background: var(--paper); }
+#panel .toggle input:checked::after { transform: rotate(40deg) scale(1); }
+#panel .toggle input:focus-visible { outline: 1.5px solid var(--current); outline-offset: 2px; }
+
+/* A rule with an ornament between the key and the settings, and before the estimates. */
+#panel .impact { border-top: 0; margin-top: 14px; padding-top: 14px; position: relative; }
+#panel .impact::before {
+  content: "\2766"; position: absolute; left: 50%; transform: translate(-50%, -50%); top: 0;
+  padding: 0 8px; background: var(--paper); color: var(--ink-2); font-size: 12px;
+}
+#panel .impact::after { content: ""; position: absolute; top: 0; left: 0; right: 0; border-top: 1px solid var(--ink); z-index: -1; }
+#panel .impact summary { font-family: var(--fell); font-weight: 400; font-size: 14.5px; letter-spacing: .03em; list-style: none; }
+#panel .impact summary::-webkit-details-marker { display: none; }
+#panel .impact summary::before { content: "\25B8"; display: inline-block; width: 1em; transition: transform .15s ease; }
+#panel .impact[open] summary::before { transform: rotate(90deg); }
+
+/* Small print in the map's roman. */
+#panel .status, #panel .note { font-family: var(--serif); font-style: italic; color: var(--muted); }
+#panel .note a, #panel .impact a { color: var(--open-then); }
+
+/* Buttons: letterpress, not floating. Story in the map's red, Findings a buff ticket. */
+#panel .story-btn, #panel .findings-btn { font-family: var(--fell); font-weight: 400; font-size: 13px; letter-spacing: .1em;
+  text-transform: none; font-stretch: normal; padding: 4px 12px 5px; border-radius: 2px; }
+#panel .story-btn { background: var(--current); border: 1px solid #6a1e18; color: var(--paper);
+  box-shadow: inset 0 0 0 1.5px var(--current), inset 0 0 0 2.5px rgba(247,243,230,.7); }
+#panel .story-btn:hover { background: #962a22; transform: none; }
+#panel .findings-btn { background: var(--grain) 0 0 / 240px 240px, var(--buff); border: 1px solid #a8956a; color: var(--ink);
+  box-shadow: inset 0 0 0 2px var(--buff), inset 0 0 0 2.6px rgba(60,48,30,.35); }
+#panel .findings-btn:hover { background: #e2d2a6; }
+
+/* ---------- 2050: the future look (the story's last chapter, future.js) ----------
+   The old map sinks under a dark, gridded layer with the proposed network drawn on it in light,
+   and the page changes with it: the paper sheets become dark glass edged in cyan, the engraver's
+   type becomes a geometric display face and a clean grotesque. Leaving the chapter turns it all
+   back. Colours, fonts and the sheets' fill carry a transition, so the change is a fade. */
+.future-layer {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  opacity: 0; transition: opacity 1.2s ease;
+  background:
+    radial-gradient(ellipse at 50% 45%, rgba(10, 30, 60, 0) 0%, rgba(3, 8, 18, 0.55) 100%),
+    linear-gradient(rgba(60, 232, 255, 0.07) 1px, transparent 1px) 0 0 / 44px 44px,
+    linear-gradient(90deg, rgba(60, 232, 255, 0.07) 1px, transparent 1px) 0 0 / 44px 44px,
+    rgba(5, 12, 26, 0.84);
+}
+.future-layer.on { opacity: 1; }
+.future-layer canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.future-legend {
+  position: absolute; left: 50%; bottom: 30px; transform: translateX(-50%);
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 16px; max-width: 640px; box-sizing: border-box;
+  padding: 9px 14px; border: 1px solid rgba(60, 232, 255, 0.35); border-radius: 10px;
+  background: rgba(6, 14, 30, 0.72); backdrop-filter: blur(6px);
+  font: 500 11px/1.3 "Space Grotesk", system-ui, sans-serif; color: #cfe9ff; letter-spacing: 0.02em;
+}
+.future-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.future-legend i { width: 20px; height: 3px; border-radius: 2px; background: var(--c); box-shadow: 0 0 8px var(--c); }
+.future-legend b { width: 8px; height: 8px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 8px #7fe9ff; box-sizing: border-box; }
+.future-legend em { flex-basis: 100%; text-align: center; font-style: normal; font-size: 10px; color: #7f9cbf; letter-spacing: 0.06em; text-transform: uppercase; }
+
+#panel, #story, #panel *, #story * { transition: color 0.9s ease, background-color 0.9s ease, border-color 0.9s ease; }
+#panel, #story { transition: background 0.9s ease, border-color 0.9s ease, box-shadow 0.9s ease, color 0.9s ease; }
+
+body.future {
+  --ink: #e8f6ff;
+  --ink-2: #b9d4ea;
+  --muted: #86a3c0;
+  --paper: #0a1424;
+  --panel: rgba(8, 18, 36, 0.86);
+  --card: rgba(16, 32, 58, 0.75);
+  --line: rgba(60, 232, 255, 0.25);
+  --brand: #3ce8ff;
+  --cta: #ff4fb0;
+  --cta-hover: #ff73c2;
+  --current: #3ce8ff;
+  --open-then: #6f8dff;
+  --closed: #6f7f99;
+  --unknown: #56657c;
+  --town: #ff4fb0;
+  --buff: rgba(16, 32, 58, 0.8);
+  --display: "Orbitron", "Space Grotesk", system-ui, sans-serif;
+  --fell: "Space Grotesk", system-ui, sans-serif;
+  --serif: "Space Grotesk", system-ui, sans-serif;
+  --sans: "Space Grotesk", system-ui, sans-serif;
+}
+/* The sheets: dark glass with a cyan edge and a soft glow, no paper grain. */
+body.future #panel, body.future #story, body.future #findings {
+  border-color: rgba(60, 232, 255, 0.55);
+  background: linear-gradient(160deg, rgba(20, 44, 80, 0.9), rgba(6, 14, 30, 0.92));
+  box-shadow: 0 0 0 1px rgba(60, 232, 255, 0.12), 0 0 28px rgba(60, 232, 255, 0.18), 0 12px 40px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  color: var(--ink);
+}
+body.future .title-shaded, body.future #story h2 {
+  font-family: var(--display); letter-spacing: 0.06em; text-transform: uppercase;
+  color: #ffffff; text-shadow: 0 0 12px rgba(60, 232, 255, 0.55);
+}
+body.future #story h2 { font-size: 19px; line-height: 1.3; }
+/* The panel title in 2050: the lettering lit white with the cyan glow, IRELAND's ink turned to light. */
+body.future .pt-shaded { color: #ffffff; text-shadow: 0 0 10px rgba(60, 232, 255, 0.55); }
+body.future .pt-of { color: #9fd8ff; }
+body.future .pt-hero { filter: invert(1) drop-shadow(0 0 6px rgba(60, 232, 255, 0.6)); }
+body.future .sub strong { font-family: var(--display); color: #fff; text-shadow: 0 0 10px rgba(60, 232, 255, 0.6); }
+body.future .story-num { color: rgba(60, 232, 255, 0.22) !important; font-family: var(--display); }
+body.future .eyebrow, body.future .story-kicker, body.future #story .story-count { color: #3ce8ff; text-transform: uppercase; letter-spacing: 0.14em; font-size: 11px; }
+body.future .viz, body.future .viz-stat, body.future .story-fair, body.future #panel > .stats div, body.future .legend, body.future .md th {
+  background: rgba(16, 34, 62, 0.7) !important; border-color: rgba(60, 232, 255, 0.28) !important; color: var(--ink);
+  box-shadow: inset 0 0 0 1px rgba(60, 232, 255, 0.08);
+}
+body.future .viz-stat-value { font-family: var(--display); color: #fff; font-size: 17px; letter-spacing: 0.02em; }
+body.future .story-callout { background: rgba(60, 232, 255, 0.08); border-color: #3ce8ff; color: var(--ink); }
+body.future .story-src { color: #7f9cbf; }
+body.future a { color: #7fe9ff; }
+body.future #story footer { background: rgba(6, 14, 30, 0.6); border-top-color: rgba(60, 232, 255, 0.25); }
+body.future #story footer button { background: transparent; color: #cfe9ff; border-color: rgba(60, 232, 255, 0.45); font-family: var(--sans); letter-spacing: 0.08em; }
+body.future #story footer button.primary { background: #3ce8ff; color: #04101e; border-color: #3ce8ff; box-shadow: 0 0 16px rgba(60, 232, 255, 0.55); }
+body.future #story footer button:disabled { opacity: 0.35; }
+body.future .story-dots button, body.future #storyDots button { background: rgba(60, 232, 255, 0.25) !important; }
+body.future #storyDots button.on { background: #3ce8ff !important; box-shadow: 0 0 8px #3ce8ff; }
+body.future #storyProgress { background: linear-gradient(90deg, #3ce8ff, #ff4fb0) !important; box-shadow: 0 0 10px rgba(60, 232, 255, 0.6); }
+body.future #play { background: #3ce8ff; color: #04101e; box-shadow: 0 0 14px rgba(60, 232, 255, 0.6); }
+body.future .story-btn, body.future #panel .story-btn { background: #ff4fb0; border-color: #ff4fb0; color: #fff; box-shadow: 0 0 14px rgba(255, 79, 176, 0.55); }
+body.future .findings-btn, body.future #panel .findings-btn { background: transparent; border-color: rgba(60, 232, 255, 0.55); color: #cfe9ff; box-shadow: none; }
+body.future #closeStory, body.future #closeFindings { background: rgba(60, 232, 255, 0.12); color: #cfe9ff; }
+body.future .esri-widget, body.future .esri-widget--button { background: rgba(8, 18, 36, 0.9); color: #cfe9ff; }
+body.future .esri-attribution { background: rgba(4, 10, 22, 0.8); color: #7f9cbf; }
+body.future, body.future #viewDiv { background: #050c1a; }
+.future-legend i.ghost { height: 0; border-top: 1.5px dashed #e0a85a; background: none; box-shadow: none; opacity: 0.8; }
+
+/* ---------- The story's own pieces (story.js) ----------
+   One big number per chapter; Navan's thread, as a pinned ticket stub; the rest of the numbers
+   folded under "Show the numbers". */
+.story-big { margin: 14px 0; padding: 12px 14px 12px 16px; border-left: 4px solid var(--stat-accent, var(--accent)); background: var(--card); box-shadow: 1px 1px 0 rgba(31, 29, 26, 0.12); }
+.story-big-value { font-family: var(--display); font-weight: 800; font-size: 34px; line-height: 1.05; color: var(--ink); font-variant-numeric: lining-nums tabular-nums; }
+.story-big-label { margin-top: 4px; font-size: 13.5px; color: var(--ink-2); }
+.story-big-sub { margin-top: 3px; font-size: 11.5px; color: var(--muted); }
+.story-thread { position: relative; margin: 14px 0; padding: 10px 14px 10px 14px; background: var(--buff); border: 1px dashed rgba(60, 48, 30, 0.45); font-size: 13px; line-height: 1.5; }
+.story-thread p { margin: 0; }
+.story-thread .story-thread-name { margin-bottom: 3px; font-family: var(--fell); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--town); }
+.story-more { margin: 12px 0; border-top: 1px solid var(--line); }
+.story-more > summary { padding: 8px 0; font-family: var(--fell); font-size: 13px; letter-spacing: 0.04em; color: var(--accent); cursor: pointer; }
+.story-more[open] > summary { margin-bottom: 4px; }
+body.future .story-big { background: rgba(16, 34, 62, 0.7); box-shadow: 0 0 18px rgba(60, 232, 255, 0.12); }
+body.future .story-big-value { font-family: var(--display); color: #fff; font-size: 30px; text-shadow: 0 0 12px rgba(60, 232, 255, 0.6); }
+body.future .story-thread { background: rgba(255, 79, 176, 0.08); border-color: rgba(255, 79, 176, 0.5); }
+body.future .story-thread .story-thread-name { color: #ff4fb0; }
+body.future .story-more > summary { color: #3ce8ff; }
+
+/* ---------- Findings as a motion piece (findings.js) ----------
+   Six cards in the drawer: a kicker and title, a big number counting up, a chart that builds
+   itself, a note. Paper and ink like the panel; things arrive in a stagger (--i) and the bars
+   grow from nothing. With reduced motion everything is simply in place. */
+.mg { display: flex; flex-direction: column; min-height: 0; flex: 1; padding: 0 20px 14px; color: var(--ink-2); }
+.mg-progress { display: flex; gap: 4px; margin: 4px 0 10px; }
+.mg-progress button { flex: 1; height: 14px; padding: 5px 0; border: 0; background: none; cursor: pointer; }
+.mg-progress button::before { content: ""; display: block; height: 4px; border-radius: 2px; background: rgba(31, 29, 26, .14); }
+.mg-progress button i { display: block; height: 4px; margin-top: -4px; width: 0; border-radius: 2px; background: var(--ink); }
+.mg-progress button.done i { width: 100%; }
+.mg-progress button.now i { animation: mg-fill var(--card-ms, 9s) linear forwards; }
+.mg.paused .mg-progress button.now i { animation-play-state: paused; }
+@keyframes mg-fill { from { width: 0; } to { width: 100%; } }
+
+.mg-stage { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; }
+.mg-card { margin: auto 0; padding: 8px 0 16px; } /* centred in the drawer when there's room */
+.mg-card > * { opacity: 0; transform: translateY(10px); }
+.mg-card.in > * { animation: mg-rise .6s cubic-bezier(.2, .8, .2, 1) forwards; }
+.mg-card.in > :nth-child(1) { animation-delay: 0s; }
+.mg-card.in > :nth-child(2) { animation-delay: .08s; }
+.mg-card.in > :nth-child(3) { animation-delay: .18s; }
+.mg-card.in > :nth-child(4) { animation-delay: .3s; }
+.mg-card.in > :nth-child(5) { animation-delay: .42s; }
+.mg-card.in > :nth-child(6) { animation-delay: .54s; }
+.mg-card.in > :nth-child(7) { animation-delay: .66s; }
+.mg-card.in > :nth-child(n+8) { animation-delay: .78s; }
+@keyframes mg-rise { to { opacity: 1; transform: none; } }
+
+.mg-kicker { margin: 6px 0 2px; font-family: var(--fell); font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--brand); }
+.mg-title { margin: 0 0 10px; font-family: var(--display); font-weight: 800; font-size: 21px; line-height: 1.1; letter-spacing: .02em; color: var(--ink); }
+.mg-hero { font-family: var(--serif); font-weight: 700; font-size: 52px; line-height: 1; color: var(--ink); font-variant-numeric: lining-nums tabular-nums; letter-spacing: -.01em; }
+.mg-hero.lost { color: var(--line-lost); }
+.mg-lede { margin: 6px 0 14px; font-family: var(--serif); font-size: 15px; line-height: 1.4; color: var(--ink-2); }
+.mg-note { margin: 14px 0 0; font-size: 12px; line-height: 1.5; color: var(--muted); font-style: italic; }
+
+/* A railway drawing itself across the card, in the map's 1920s symbol (ink edges, bars). */
+.mg-track { height: 9px; margin: 2px 0 16px; }
+.mg-track i { display: block; height: 100%; width: 0; box-sizing: border-box; border: 2px solid #25221d;
+  background: repeating-linear-gradient(90deg, var(--line-kept) 0 7px, #f6efdc 7px 14px); }
+.mg-card.in .mg-track i { animation: mg-lay 1.6s .35s cubic-bezier(.4, 0, .2, 1) forwards; }
+@keyframes mg-lay { to { width: 100%; } }
+
+.mg-trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.mg-trio div, .mg-pair > div { padding: 8px 8px 7px; background: var(--grain) 0 0 / 240px 240px, var(--buff); border: 1px solid #c8b78a; border-radius: 3px; }
+.mg-trio b { display: block; font-family: var(--sans); font-weight: 800; font-stretch: 80%; font-size: 19px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.mg-trio > div > span, .mg-pair > div > span { display: block; margin-top: 2px; font-size: 11px; line-height: 1.3; color: var(--ink-2); }
+.mg-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.mg-pair .mg-hero { font-size: 36px; }
+
+/* Kept and lost, as one bar splitting. */
+.mg-split, .mg-share { display: flex; height: 16px; border: 1px solid #25221d; border-radius: 2px; overflow: hidden; background: #f6efdc; }
+.mg-split i { width: 0; transition: width 1.1s cubic-bezier(.4, 0, .2, 1); }
+.mg-card.in .mg-split i { width: var(--w); }
+.mg-card.in .mg-split .lost { transition-delay: .35s; }
+.mg-split .kept, .mg-share .rail { background: repeating-linear-gradient(90deg, var(--line-kept) 0 6px, #f6efdc 6px 12px); }
+.mg-split .lost { background: repeating-linear-gradient(90deg, var(--line-lost) 0 6px, #f6efdc 6px 12px); }
+.mg-split-key { display: flex; justify-content: space-between; margin: 5px 0 14px; font-size: 11.5px; }
+.mg-split-key .kept { color: var(--line-kept); font-weight: 600; }
+.mg-split-key .lost { color: var(--line-lost); font-weight: 600; }
+.mg-split-key .road { color: var(--muted); font-weight: 600; }
+.mg-share .rail { width: 0; transition: width 1s .4s ease; }
+.mg-card.in .mg-share .rail { width: 1.6%; } /* 0.6% would vanish: drawn just wide enough to see */
+.mg-share .road { flex: 1; background: repeating-linear-gradient(90deg, #8b8478 0 6px, #f6efdc 6px 12px); opacity: 0; transition: opacity .8s .7s; }
+.mg-card.in .mg-share .road { opacity: .55; }
+
+/* Closures by decade: columns rising, the 1950s-60s peak in red. */
+.mg-decades { display: flex; align-items: flex-end; gap: 5px; height: 110px; padding-top: 16px; border-bottom: 1px solid var(--ink); }
+.mg-decades > div { position: relative; flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; }
+.mg-decades i { display: block; height: 0; background: #b9ad93; border-radius: 2px 2px 0 0; transition: height .9s cubic-bezier(.3, 1.2, .4, 1) calc(.5s + var(--i) * .07s); }
+.mg-decades .peak i { background: var(--line-lost); }
+.mg-card.in .mg-decades i { height: var(--h); }
+.mg-decades b { position: absolute; left: 50%; bottom: calc(var(--h) + 3px); transform: translateX(-50%); font-size: 10px; color: var(--line-lost); opacity: 0; transition: opacity .4s calc(1.2s + var(--i) * .07s); white-space: nowrap; }
+.mg-card.in .mg-decades b { opacity: 1; }
+.mg-decades span { position: absolute; top: 100%; left: 0; right: 0; margin-top: 3px; text-align: center; font-size: 10px; color: var(--muted); }
+.mg-decades + .mg-note { margin-top: 22px; }
+
+/* The ten largest towns cut off, as bars. */
+.mg-towns { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 4px; }
+.mg-towns li { display: grid; grid-template-columns: 82px 1fr 48px 30px; align-items: center; gap: 6px; font-size: 11.5px; }
+.mg-towns .town-link { justify-self: start; padding: 0; border: 0; background: none; font: inherit; font-weight: 600; color: var(--ink); cursor: pointer; text-decoration: underline dotted; text-underline-offset: 2px; }
+.mg-towns i { height: 8px; width: 0; background: var(--town); border-radius: 1px; transition: width .9s cubic-bezier(.4, 0, .2, 1) calc(.45s + var(--i) * .06s); }
+.mg-card.in .mg-towns i { width: var(--w); }
+.mg-towns b { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; color: var(--ink-2); }
+.mg-towns span { color: var(--line-lost); font-variant-numeric: tabular-nums; }
+
+/* Journeys if the lines ran: the low-high range, the central case, and today's network. */
+.mg-range { margin: 4px 0 0; }
+.mg-range-bar { position: relative; height: 22px; border-bottom: 1px solid var(--ink); }
+.mg-range-bar i { position: absolute; bottom: 4px; height: 10px; left: var(--a); width: 0; background: repeating-linear-gradient(90deg, var(--line-lost) 0 6px, #f6efdc 6px 12px); border: 1px solid #25221d; transition: width 1s .45s cubic-bezier(.4, 0, .2, 1); }
+.mg-card.in .mg-range-bar i { width: calc(var(--b) - var(--a)); }
+.mg-range-bar em, .mg-range-bar u { position: absolute; bottom: 0; left: var(--x); width: 2px; height: 22px; background: var(--ink); opacity: 0; transition: opacity .4s 1.3s; }
+.mg-range-bar u { background: var(--line-kept); }
+.mg-card.in .mg-range-bar em, .mg-card.in .mg-range-bar u { opacity: 1; }
+.mg-range-key { position: relative; height: 18px; font-size: 10.5px; color: var(--muted); }
+.mg-range-key span { position: absolute; left: var(--x); top: 3px; transform: translateX(-50%); white-space: nowrap; }
+.mg-range-key .today { color: var(--line-kept); font-weight: 600; transform: translateX(-85%); }
+
+/* Corridors, as tickets. */
+.mg-chips { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.mg-chips li { padding: 4px 9px; font-size: 12px; font-weight: 600; color: var(--ink); background: var(--grain) 0 0 / 240px 240px, var(--buff); border: 1px solid #c8b78a; border-radius: 3px;
+  opacity: 0; transform: scale(.85); transition: opacity .35s calc(.5s + var(--i) * .09s), transform .45s cubic-bezier(.3, 1.5, .5, 1) calc(.5s + var(--i) * .09s); }
+.mg-card.in .mg-chips li { opacity: 1; transform: none; }
+
+/* Controls along the bottom. */
+.mg-controls { display: flex; align-items: center; gap: 6px; padding-top: 10px; border-top: 1px solid var(--line); }
+.mg-controls button { height: 30px; min-width: 30px; padding: 0 8px; border: 1px solid #a8956a; border-radius: 3px; background: var(--grain) 0 0 / 240px 240px, var(--buff); color: var(--ink); font: inherit; font-size: 14px; cursor: pointer; }
+.mg-controls button:hover { filter: brightness(.97); }
+.mg-controls .mg-play { font-size: 11px; }
+.mg-step { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.mg-controls .mg-full { margin-left: auto; font-family: var(--fell); font-size: 13px; }
+.mg.full .mg-progress, .mg.full .mg-stage, .mg.full .mg-controls { display: none; }
+.mg-fullmd { flex: 1; padding: 0; }
+.mg-back { margin: 4px 0 8px; padding: 4px 8px; border: 1px solid #a8956a; border-radius: 3px; background: var(--buff); color: var(--ink); font: inherit; font-size: 12.5px; cursor: pointer; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mg-card > *, .mg-card.in > * { opacity: 1; transform: none; animation: none; }
+  .mg-card *, .mg-progress i { transition: none !important; animation: none !important; }
+  .mg-track i { width: 100%; }
+}
+
+/* ---------- Findings, second pass: a smaller window, departure-board numbers, Sources ---------- */
+/* A compact card window rather than a full-height drawer (a phone still gets the whole screen). */
+#findings { width: 330px; bottom: auto; height: min(600px, calc(100% - 32px)); }
+@media (max-width: 600px) { #findings { width: auto; height: auto; bottom: 0; } }
+#findings header { padding: 12px 16px 8px; }
+#findings header h2 { font-size: 17px; }
+.mg { padding: 0 16px 12px; }
+
+/* The numbers: each digit a little drum of 0-9 three times over, spun down two whole turns into
+   place, the right-hand digits turning longest and landing last (findings.js, odo). */
+.mg-hero { font-size: 60px; line-height: 1; margin: 2px 0 0; }
+.mg-hero.second { font-size: 44px; margin-top: 4px; }
+.odo { display: inline-flex; align-items: baseline; white-space: nowrap; }
+.odo-d { display: inline-block; height: 1em; line-height: 1; overflow: hidden; vertical-align: baseline; }
+.odo-d > span { display: block; transform: translateY(0); }
+.odo-d i { display: block; height: 1em; font-style: normal; text-align: center; }
+.odo-go .odo-d > span { animation: odo-roll var(--t, 1.2s) var(--w, 0ms) cubic-bezier(.15, .85, .25, 1) forwards; }
+@keyframes odo-roll { to { transform: translateY(calc(var(--d) * -1em)); } }
+.odo-c { display: inline-block; }
+.odo-u { margin-left: .14em; font-size: .42em; font-weight: 600; letter-spacing: .02em; }
+.odo-pre { margin-right: .06em; font-size: .7em; color: var(--muted); }
+.mg-trio b .odo-u { font-size: .62em; }
+.mg-trio b { font-size: 22px; line-height: 1.05; }
+.mg-lede.tight { margin-bottom: 4px; }
+/* A soft landing: the whole number settles with a slight lift once its digits are in. */
+.mg-card.in .mg-hero .odo { animation: odo-settle .5s 1.45s ease-out both; }
+@keyframes odo-settle { 0% { transform: translateY(0); } 40% { transform: translateY(-3px); } 100% { transform: none; } }
+
+/* Sources, and the method behind them, take the window over. */
+.mg.aside .mg-progress, .mg.aside .mg-stage, .mg.aside .mg-controls { display: none; }
+.mg-pane { flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: thin; scrollbar-color: #bfb293 transparent; }
+.mg-pane.md { padding: 0; }
+.mg-srclist { list-style: none; margin: 8px 0 12px; padding: 0; display: grid; gap: 9px; }
+.mg-srclist li { display: grid; grid-template-columns: 16px 1fr; gap: 6px; font-size: 12.5px; line-height: 1.35; }
+.mg-srclist a { color: var(--ink); font-weight: 600; text-decoration: underline; text-decoration-color: #bfb293; text-underline-offset: 2px; }
+.mg-srclist a:hover { text-decoration-color: var(--ink); }
+.mg-srclist small { display: block; margin-top: 1px; font-size: 11.5px; color: var(--muted); }
+.mg-srclist small em { color: var(--line-lost); font-style: normal; }
+.mg-mark { font-weight: 700; text-align: center; color: var(--brand); }
+.mg-mark.fixed { color: var(--line-lost); }
+.mg-mark.est { color: var(--muted); }
+.mg-method, .mg-controls .mg-sources { font-family: var(--fell); font-size: 13px; }
+.mg-method { padding: 5px 10px; border: 1px solid #a8956a; border-radius: 3px; background: var(--grain) 0 0 / 240px 240px, var(--buff); color: var(--ink); cursor: pointer; }
+
+/* ---------- The panel's head: the title across the top, bigger; Story and Findings beneath ---------- */
+.panel-head { flex-direction: column; align-items: stretch; gap: 10px; }
+.panel-head > div:first-child { display: flex; flex-direction: column; align-items: center; }
+#panel .eyebrow { width: auto; text-align: center; }
+.panel-title { width: 100%; max-width: 250px; }
+.pt-shaded { font-size: 21px; letter-spacing: .06em; }
+.pt-of { font-size: 11px; margin: 4px 0 3px; }
+.head-btns { flex-direction: row; justify-content: center; gap: 8px; }
+.head-btns > * { flex: 1; max-width: 120px; }
+
+/* Departure-board numbers with reduced motion: no roll, each drum already on its digit. */
+@media (prefers-reduced-motion: reduce) {
+  .odo-d > span, .odo-go .odo-d > span { animation: none !important; transform: translateY(calc(var(--d) * -1em)); }
+}
+
+/* ---------- The story in motion (story.js) ----------
+   A chapter comes in with a short stagger; its headline number rolls like a departure board
+   (odometer.js); line charts draw themselves left to right with their end labels arriving last;
+   bar charts already grow in (story-charts.js). */
+.story-content > * { opacity: 0; transform: translateY(8px); }
+.story-content.in > * { animation: mg-rise .55s cubic-bezier(.2, .8, .2, 1) forwards; }
+.story-content.in > :nth-child(1) { animation-delay: .05s; }
+.story-content.in > :nth-child(2) { animation-delay: .15s; }
+.story-content.in > :nth-child(3) { animation-delay: .27s; }
+.story-content.in > :nth-child(4) { animation-delay: .39s; }
+.story-content.in > :nth-child(5) { animation-delay: .5s; }
+.story-content.in > :nth-child(n+6) { animation-delay: .6s; }
+.story-big-value .odo-u { font-size: .5em; }
+.viz-line { stroke-dasharray: 1; stroke-dashoffset: 1; animation: viz-draw 1.5s .25s cubic-bezier(.45, 0, .2, 1) forwards; }
+.viz-area { opacity: 0; animation: viz-fade .8s 1.2s ease forwards; }
+.viz-end, .viz-start, svg > .viz-dot:not([visibility]) { opacity: 0; animation: viz-fade .4s 1.55s ease forwards; }
+@keyframes viz-draw { to { stroke-dashoffset: 0; } }
+@keyframes viz-fade { to { opacity: 1; } }
+.story-see { display: inline-flex; align-items: center; gap: 6px; margin: 4px 0 10px; padding: 5px 10px; border: 1px solid #a8956a; border-radius: 3px;
+  background: var(--grain) 0 0 / 240px 240px, var(--buff); color: var(--ink); font-family: var(--fell); font-size: 13px; cursor: pointer; }
+.story-see:hover { filter: brightness(.97); }
+body.future .story-see { background: rgba(16, 34, 62, 0.7); color: #cfe9ff; border-color: rgba(60, 232, 255, 0.4); }
+@media (prefers-reduced-motion: reduce) {
+  .story-content > *, .story-content.in > * { opacity: 1; transform: none; animation: none; }
+  .viz-line, .viz-area, .viz-end, .viz-start, .viz-dot { animation: none !important; opacity: 1; stroke-dashoffset: 0; }
+}
+
+/* ---------- The story as motion graphics (story.js) ----------
+   A compact window like the Findings'; each chapter one point, one number, one graphic. Each
+   graphic builds itself as the chapter comes in (.story-content.in): a timeline ticks in, a bar
+   for the network shrinks or grows, county names are stamped on, figures pop in. */
+#story { width: 360px; bottom: auto; height: min(640px, calc(100% - 32px)); }
+@media (max-width: 600px) { #story { width: auto; height: auto; bottom: 0; } }
+#storyBody { padding: 0 18px 14px; }
+.story-hero { margin: 0 -18px 4px; padding: 16px 18px 10px; }
+#storyBody h2 { font-size: 22px; }
+.sg-lede { margin: 6px 0 10px !important; font-family: var(--serif); font-size: 15px; line-height: 1.45; color: var(--ink); }
+.sg-note { margin: 10px 0 !important; font-size: 12px; line-height: 1.5; color: var(--muted); font-style: italic; }
+.story-big { margin: 10px 0; }
+.story-big-value { font-size: 44px; }
+.story-thread { margin: 10px 0; padding: 8px 12px; font-size: 12.5px; }
+
+/* A timeline: a rule down the left, each year ticking in after the last. */
+.sg-timeline { list-style: none; margin: 6px 0 10px; padding: 0 0 0 14px; border-left: 2px solid color-mix(in srgb, var(--accent) 60%, transparent); display: grid; gap: 5px; }
+.sg-timeline li { position: relative; display: grid; grid-template-columns: 62px 1fr; gap: 8px; align-items: baseline; font-size: 12.5px; line-height: 1.35;
+  opacity: 0; transform: translateX(-8px); }
+.sg-timeline li::before { content: ""; position: absolute; left: -19px; top: .45em; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 2px var(--paper); }
+.sg-timeline b { font-family: var(--sans); font-weight: 800; font-stretch: 80%; font-size: 14px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.story-content.in .sg-timeline li { animation: sg-tick .45s cubic-bezier(.2, .8, .2, 1) forwards; animation-delay: calc(.45s + var(--i) * .22s); }
+@keyframes sg-tick { to { opacity: 1; transform: none; } }
+
+/* The network's length as one bar in the map's railway symbol: shrinking (lost) or growing (the plan). */
+.sg-bar { position: relative; height: 14px; margin: 4px 0 3px; border: 1px solid #25221d; background: #f6efdc; overflow: hidden; }
+.sg-bar i { position: absolute; inset: 0 auto 0 0; width: var(--a); background: repeating-linear-gradient(90deg, var(--line-kept) 0 7px, #f6efdc 7px 14px); }
+.sg-bar.shrink::after { content: ""; position: absolute; inset: 0 0 0 var(--b); background: repeating-linear-gradient(90deg, var(--line-lost) 0 7px, #f6efdc 7px 14px); opacity: 0; }
+.story-content.in .sg-bar.shrink i { animation: sg-shrink 1.6s .6s cubic-bezier(.5, 0, .2, 1) forwards; }
+.story-content.in .sg-bar.shrink::after { animation: sg-ghost 1.6s .6s ease forwards; }
+@keyframes sg-shrink { to { width: var(--b); } }
+@keyframes sg-ghost { 0% { opacity: 0; } 30% { opacity: .55; } 100% { opacity: .3; } }
+.sg-bar.grow i { width: var(--a); }
+.sg-bar.grow::after { content: ""; position: absolute; top: 0; bottom: 0; left: var(--a); width: 0; background: repeating-linear-gradient(90deg, #3ce8ff 0 7px, rgba(60, 232, 255, .15) 7px 14px); box-shadow: 0 0 10px rgba(60, 232, 255, .6); }
+.story-content.in .sg-bar.grow::after { animation: sg-extend 1.4s .7s cubic-bezier(.3, 0, .2, 1) forwards; }
+@keyframes sg-extend { to { width: calc(var(--b) - var(--a)); } }
+.sg-bar-key { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 11.5px; font-weight: 600; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+body.future .sg-bar { background: rgba(8, 18, 36, .6); border-color: rgba(60, 232, 255, .5); }
+body.future .sg-bar-key { color: #cfe9ff; }
+
+/* Chips (routes) pop in; "stamps" (the counties with no railway) are pressed on, a little askew. */
+.sg-chips { list-style: none; margin: 6px 0 10px; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.sg-chips li { padding: 4px 9px; font-size: 12px; font-weight: 600; color: var(--ink); background: var(--grain) 0 0 / 240px 240px, var(--buff); border: 1px solid #c8b78a; border-radius: 3px;
+  opacity: 0; transform: scale(.85); }
+.story-content.in .sg-chips li { animation: sg-pop .45s cubic-bezier(.3, 1.5, .5, 1) forwards; animation-delay: calc(.5s + var(--i) * .12s); }
+@keyframes sg-pop { to { opacity: 1; transform: none; } }
+.sg-chips.stamps { gap: 8px; margin-top: 2px; }
+.sg-chips.stamps li { padding: 4px 10px; font-family: var(--display); font-weight: 800; font-size: 13px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--line-lost); background: transparent; border: 2px solid var(--line-lost); border-radius: 2px; transform: scale(1.6) rotate(-4deg); }
+.sg-chips.stamps li:nth-child(even) { --r: 3deg; }
+.story-content.in .sg-chips.stamps li { animation: sg-stamp .35s cubic-bezier(.2, .9, .3, 1.2) forwards; animation-delay: calc(.35s + var(--i) * .2s); }
+@keyframes sg-stamp { 0% { opacity: 0; transform: scale(1.6) rotate(var(--r, -4deg)); } 100% { opacity: .92; transform: scale(1) rotate(var(--r, -2deg)); } }
+body.future .sg-chips li { background: rgba(16, 34, 62, .7); color: #cfe9ff; border-color: rgba(60, 232, 255, .45); }
+
+/* Three figures side by side, popping in. */
+.sg-trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 8px 0; }
+.sg-trio div { padding: 7px 8px 6px; background: var(--grain) 0 0 / 240px 240px, var(--buff); border: 1px solid #c8b78a; border-radius: 3px; opacity: 0; transform: translateY(6px); }
+.sg-trio b { display: block; font-family: var(--sans); font-weight: 800; font-stretch: 80%; font-size: 19px; color: var(--ink); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.sg-trio span { display: block; margin-top: 2px; font-size: 10.5px; line-height: 1.3; color: var(--ink-2); }
+.story-content.in .sg-trio div { animation: sg-tick .45s cubic-bezier(.2, .8, .2, 1) forwards; animation-delay: calc(.7s + var(--i) * .15s); }
+body.future .sg-trio div { background: rgba(16, 34, 62, .7); border-color: rgba(60, 232, 255, .35); }
+body.future .sg-trio b { color: #fff; }
+body.future .sg-lede { color: #e6f6ff; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sg-timeline li, .sg-chips li, .sg-trio div { opacity: 1; transform: none; animation: none !important; }
+  .sg-chips.stamps li { opacity: .92; transform: rotate(var(--r, -2deg)); }
+  .sg-bar.shrink i { width: var(--b); animation: none !important; }
+  .sg-bar.shrink::after { opacity: .3; animation: none !important; }
+  .sg-bar.grow::after { width: calc(var(--b) - var(--a)); animation: none !important; }
+}
+
+/* The story's window, fitted to its chapters; sources fold to one line. */
+#story { height: min(700px, calc(100% - 32px)); }
+.story-srcs { margin: 10px 0 0; font-size: 11px; color: var(--muted); }
+.story-srcs summary { cursor: pointer; font-family: var(--fell); font-size: 12px; letter-spacing: .04em; list-style: none; }
+.story-srcs summary::-webkit-details-marker { display: none; }
+.story-srcs summary::before { content: "+ "; }
+.story-srcs[open] summary::before { content: "− "; }
+.story-srcs .story-src { margin: 4px 0 0 !important; }
+.story-content .viz { margin: 8px 0; }
+
+/* Tighter: the story's chapters fit their window without scrolling on most screens. */
+#story { height: min(780px, calc(100% - 32px)); }
+.story-hero { padding: 12px 18px 6px; }
+#storyBody h2 { font-size: 20px; line-height: 1.15; }
+.story-kicker { margin-bottom: 3px; }
+.story-big { margin: 8px 0; padding: 8px 12px 8px 14px; }
+.story-big-value { font-size: 40px; }
+.story-big-label { margin-top: 2px; font-size: 12.5px; }
+.story-thread { display: block; padding: 7px 11px; }
+.story-thread .story-thread-name { display: inline; margin: 0 6px 0 0; }
+.story-thread p { display: inline; }

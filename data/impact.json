@@ -1,0 +1,14 @@
+{
+  "people": 845556,
+  "places": 469,
+  "journeys": {
+    "low": 7870560,
+    "central": 16871190,
+    "high": 33742380
+  },
+  "carTripsPerWeekday": {
+    "low": 9720,
+    "central": 20836,
+    "high": 41672
+  }
+}

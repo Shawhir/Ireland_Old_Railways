@@ -1,0 +1,134 @@
+[
+ {
+  "year": 1840,
+  "railKm": 24,
+  "townsCutOff": 0,
+  "peopleToday": 0
+ },
+ {
+  "year": 1850,
+  "railKm": 866,
+  "townsCutOff": 0,
+  "peopleToday": 0
+ },
+ {
+  "year": 1860,
+  "railKm": 2186,
+  "townsCutOff": 0,
+  "peopleToday": 0
+ },
+ {
+  "year": 1870,
+  "railKm": 3256,
+  "townsCutOff": 0,
+  "peopleToday": 0
+ },
+ {
+  "year": 1880,
+  "railKm": 3891,
+  "townsCutOff": 2,
+  "peopleToday": 3050
+ },
+ {
+  "year": 1890,
+  "railKm": 4513,
+  "townsCutOff": 3,
+  "peopleToday": 3600
+ },
+ {
+  "year": 1900,
+  "railKm": 5114,
+  "townsCutOff": 3,
+  "peopleToday": 3600
+ },
+ {
+  "year": 1910,
+  "railKm": 5441,
+  "townsCutOff": 3,
+  "peopleToday": 3600
+ },
+ {
+  "year": 1920,
+  "railKm": 5480,
+  "townsCutOff": 3,
+  "peopleToday": 3600
+ },
+ {
+  "year": 1930,
+  "railKm": 5432,
+  "townsCutOff": 7,
+  "peopleToday": 6499
+ },
+ {
+  "year": 1940,
+  "railKm": 5089,
+  "townsCutOff": 48,
+  "peopleToday": 54079
+ },
+ {
+  "year": 1950,
+  "railKm": 4713,
+  "townsCutOff": 100,
+  "peopleToday": 154682
+ },
+ {
+  "year": 1955,
+  "railKm": 4323,
+  "townsCutOff": 142,
+  "peopleToday": 231432
+ },
+ {
+  "year": 1960,
+  "railKm": 3389,
+  "townsCutOff": 286,
+  "peopleToday": 514666
+ },
+ {
+  "year": 1965,
+  "railKm": 2662,
+  "townsCutOff": 398,
+  "peopleToday": 723943
+ },
+ {
+  "year": 1970,
+  "railKm": 2517,
+  "townsCutOff": 417,
+  "peopleToday": 757822
+ },
+ {
+  "year": 1980,
+  "railKm": 2307,
+  "townsCutOff": 437,
+  "peopleToday": 798867
+ },
+ {
+  "year": 1990,
+  "railKm": 2230,
+  "townsCutOff": 446,
+  "peopleToday": 813781
+ },
+ {
+  "year": 2000,
+  "railKm": 2207,
+  "townsCutOff": 448,
+  "peopleToday": 822941
+ },
+ {
+  "year": 2010,
+  "railKm": 2051,
+  "townsCutOff": 469,
+  "peopleToday": 845556
+ },
+ {
+  "year": 2020,
+  "railKm": 2051,
+  "townsCutOff": 469,
+  "peopleToday": 845556
+ },
+ {
+  "year": 2026,
+  "railKm": 2051,
+  "townsCutOff": 469,
+  "peopleToday": 845556
+ }
+]
