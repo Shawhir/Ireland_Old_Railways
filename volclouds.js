@@ -419,14 +419,15 @@ export function createVolumeClouds({ view, RenderNode, webgl, SpatialReference, 
 
   let coverage = P.coverage, alpha = 1, pixelShare = 1;
   // A slightly different sky each time the map opens: the clouds start from a random point
-  // near the tuned one, up to 400 km along the jet and 150 km across it. Enough to change
-  // every streak and wisp, not so far that the broad masses move out of view (they're ~200 km
-  // across). The jet and its patches are fixed to the ground, so they stay put.
+  // 200-400 km along the jet and up to 150 km across it. Enough to change every streak and
+  // wisp; the range is the part of the field that puts full streaks over Ireland and Britain
+  // (starting further back along the jet left the opening's sky all but empty on some loads).
+  // The jet and its patches are fixed to the ground, so they stay put.
   const seedAt = (along, across) => {
     const b = (WIND_BEARING * Math.PI) / 180;
     return [along * Math.sin(b) + across * Math.cos(b), along * Math.cos(b) - across * Math.sin(b)];
   };
-  let seed = seedAt((Math.random() - 0.5) * 8e5, (Math.random() - 0.5) * 3e5);
+  let seed = seedAt(2e5 + Math.random() * 2e5, (Math.random() - 0.5) * 3e5);
   const wind = [...seed];
   const smooth = (a, b, t) => { const x = Math.min(1, Math.max(0, (t - a) / (b - a))); return x * x * (3 - 2 * x); };
   // Same interface as the cirrus (clouds3d.js): place(t) for a point in the flight, 0 to 1.
