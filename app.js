@@ -687,6 +687,21 @@ async function main() {
   requestAnimationFrame(loop);
   // ?debug, or ?video (for scripted screen recordings, without the debug box), exposes the map's parts.
   if (new URLSearchParams(location.search).has("video")) { document.body.classList.add("video"); document.body.style.setProperty("--vz", VIDEO_UI_ZOOM); }
+  // ?video: window.__caption(html) puts one large line over the map, centred in the space the
+  // panel and any drawer leave, for scripted recordings that will play muted in a feed.
+  if (new URLSearchParams(location.search).has("video")) {
+    const cap = Object.assign(document.createElement("div"), { id: "vcap" });
+    document.body.appendChild(cap);
+    window.__caption = (html = "") => {
+      const p = view.padding || {};
+      cap.style.left = `${(p.left || 0) + 84}px`;
+      cap.style.right = `${(p.right || 0) + 24}px`;
+      cap.classList.remove("in");
+      void cap.offsetWidth;
+      cap.innerHTML = html;
+      if (html) cap.classList.add("in");
+    };
+  }
   if (["debug", "video"].some((k) => new URLSearchParams(location.search).has(k))) window.__anim = { rail, towns, swans, view, get lost() { return lost; }, get places() { return places; } };
 
   const total = data.features.reduce((s, f) => s + f.properties.km, 0);

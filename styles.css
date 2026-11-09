@@ -1198,3 +1198,14 @@ body.video .ticket-pop .ticket, body.video .ticket-pop .ticket-close { zoom: var
 body.video.story-open #panel, body.video.findings-open #panel { opacity: 0; transform: translateX(16px); pointer-events: none; }
 }
 body.video.landing #panel { transition: opacity 0.8s ease, transform 0.8s ease; } /* LAND_FADE_MS under ?video */
+
+/* ?video: a caption line over the map (window.__caption, app.js), in the map's own lettering. */
+#vcap { position: absolute; z-index: 4; top: 26px; text-align: center; pointer-events: none; opacity: 0;
+  font-family: var(--serif); font-weight: 700; font-size: 58px; line-height: 1.1; color: var(--ink);
+  text-shadow: 0 0 6px #f4ecd8, 0 0 14px #f4ecd8, 0 0 24px #f4ecd8; }
+#vcap.in { animation: vcap-in .5s ease-out forwards; }
+#vcap em { font-style: normal; color: #b5332a; }
+#vcap b { color: #2c4d85; }
+body.future #vcap { color: #eef4ff; text-shadow: 0 0 8px #0b1730, 0 0 18px #0b1730, 0 0 28px #0b1730; }
+body.future #vcap b { color: #6fe3ff; }
+@keyframes vcap-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
