@@ -1189,10 +1189,12 @@ body.future .sg-lede { color: #e6f6ff; }
 body.video #panel .toggle, body.video #panel .status, body.video #panel .note, body.video .landmark-keys { display: none; }
 /* ?video: panel, drawers, tickets and the home button drawn larger, by --vz (VIDEO_UI_ZOOM in
    app.js), and the panel always steps aside for a drawer. */
+@media (min-width: 601px) {
 body.video #panel, body.video #story, body.video #findings, body.video .home-btn, body.video .future-legend { zoom: var(--vz, 1.45); }
 body.video #panel { max-height: calc((100vh - 48px) / var(--vz, 1.45)); }
 body.video #story, body.video #findings { height: calc((100vh - 48px) / var(--vz, 1.45)) !important; max-height: none; }
 body.video .ticket-pop { width: calc(300px * var(--vz, 1.45)); }
 body.video .ticket-pop .ticket, body.video .ticket-pop .ticket-close { zoom: var(--vz, 1.45); }
 body.video.story-open #panel, body.video.findings-open #panel { opacity: 0; transform: translateX(16px); pointer-events: none; }
+}
 body.video.landing #panel { transition: opacity 0.8s ease, transform 0.8s ease; } /* LAND_FADE_MS under ?video */
