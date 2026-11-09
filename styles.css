@@ -1195,3 +1195,4 @@ body.video #story, body.video #findings { height: calc((100vh - 48px) / var(--vz
 body.video .ticket-pop { width: calc(300px * var(--vz, 1.45)); }
 body.video .ticket-pop .ticket, body.video .ticket-pop .ticket-close { zoom: var(--vz, 1.45); }
 body.video.story-open #panel, body.video.findings-open #panel { opacity: 0; transform: translateX(16px); pointer-events: none; }
+body.video.landing #panel { transition: opacity 0.8s ease, transform 0.8s ease; } /* LAND_FADE_MS under ?video */

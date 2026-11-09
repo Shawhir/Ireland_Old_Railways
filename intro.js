@@ -5,7 +5,9 @@
 // (onProgress, 0 to 1) by the time it lands.
 // Click to skip once the flight is under way. With reduced motion it goes straight to the map.
 
-const FLIGHT_MS = 8000;
+// The opening flight; quicker under ?video (screen recordings), where every second counts.
+const VIDEO = new URLSearchParams(location.search).has("video");
+const FLIGHT_MS = VIDEO ? 3200 : 8000;
 const START_SCALE = 2.2; // start this many times further out than the home view
 const WATCHDOG_MS = 30000; // if the flight hasn't started by then, give up and show the page
 const TILE_WAIT_MS = 4000; // longest to wait behind the card for the start view's tiles
@@ -14,7 +16,7 @@ const NOISE_WAIT_MS = 4000; // and for the clouds' noise volume
 // (a frame behind the card over PROBE_SLOW_MS, or SLOW_RUN frames in a row over SLOW_MS during
 // the flight), they're dropped: a smooth flight without them beats a juddering one.
 const PROBE_SLOW_MS = 50, SLOW_MS = 100, SLOW_RUN = 3;
-const LAND_FADE_MS = 1800; // after landing: Britain out, the panel and the lines in
+const LAND_FADE_MS = VIDEO ? 800 : 1800; // after landing: Britain out, the panel and the lines in (styles.css matches)
 
 // Times up to `count` frames (or until `maxMs` has passed): their gaps in ms.
 const frameGaps = (count, maxMs) => new Promise((done) => {
